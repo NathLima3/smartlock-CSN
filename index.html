@@ -228,7 +228,25 @@ supabaseClient.channel('smartlock-live')
   .subscribe();
 
 
-const M=document.getElementById('main');function fmtDate(v){if(!v)return '—';const d=new Date(v);return Number.isNaN(d.getTime())?String(v):d.toLocaleString('pt-BR');}function nav(i){for(let j=0;j<5;j++)document.getElementById('n'+j).className=j===i?'on':''}function toast(x){let e=document.getElementById('toast');e.textContent=x;e.style.display='block';setTimeout(()=>e.style.display='none',2200)}function head(a,b){return `<div class='title'>${a}</div><div class='sub'>${b}</div>`}function card(x){return `<div class='item' onclick='detail(${x.id})'><span class='badge ${x.s==='blocked'?'br':'bg'}'>${x.s==='blocked'?'🔴 BLOQUEADO':'🟢 LIVRE'}</span><b>${esc(x.n)}</b><small>${esc(x.ccm)} • ${esc(x.area)}</small><small>${esc(x.cub)} • ${esc(x.type)}</small></div>`}
+const M=document.getElementById('main');function fmtDate(v){
+  if(!v)return '—';
+  const raw=String(v).trim();
+  // Datas antigas no formato brasileiro: DD/MM/AAAA [HH:mm[:ss]].
+  const br=raw.match(/^(\d{2})\/(\d{2})\/(\d{4})(?:[, ]+([0-2]\d):([0-5]\d)(?::([0-5]\d))?)?$/);
+  if(br){
+    const date=`${br[1]}/${br[2]}/${br[3]}`;
+    return br[4] ? `${date}, ${br[4]}:${br[5]}${br[6]?':'+br[6]:''}` : date;
+  }
+  // Timestamps ISO são exibidos no fuso horário de São Paulo.
+  const d=new Date(raw);
+  if(Number.isNaN(d.getTime()))return raw;
+  return new Intl.DateTimeFormat('pt-BR',{
+    timeZone:'America/Sao_Paulo',
+    day:'2-digit',month:'2-digit',year:'numeric',
+    hour:'2-digit',minute:'2-digit',second:'2-digit',
+    hourCycle:'h23'
+  }).format(d);
+}function nav(i){for(let j=0;j<5;j++)document.getElementById('n'+j).className=j===i?'on':''}function toast(x){let e=document.getElementById('toast');e.textContent=x;e.style.display='block';setTimeout(()=>e.style.display='none',2200)}function head(a,b){return `<div class='title'>${a}</div><div class='sub'>${b}</div>`}function card(x){return `<div class='item' onclick='detail(${x.id})'><span class='badge ${x.s==='blocked'?'br':'bg'}'>${x.s==='blocked'?'🔴 BLOQUEADO':'🟢 LIVRE'}</span><b>${esc(x.n)}</b><small>${esc(x.ccm)} • ${esc(x.area)}</small><small>${esc(x.cub)} • ${esc(x.type)}</small></div>`}
 function home(){
   nav(0);
   const blocked=pts.filter(x=>x.s==='blocked').length;
@@ -291,18 +309,36 @@ function blocks(){nav(3);let a=pts.filter(x=>x.s==='blocked');M.innerHTML=head('
 function freePoints(){nav(3);let a=pts.filter(x=>x.s==='free');M.innerHTML=head('🟢 Equipamentos livres','Pontos atualmente sem bloqueio registrado')+statusTabs('free')+`<div class='card grid2'><div><b style='font-size:24px;color:#08a66f'>${a.length}</b><small style='display:block'>Livres</small></div><div><b style='font-size:24px;color:#df3037'>${pts.length-a.length}</b><small style='display:block'>Bloqueados</small></div></div>`+(a.length?a.map(card).join(''):'<div class="card">Nenhum equipamento livre encontrado.</div>')}
 function openBlock(id){if(!requireAuth())return;let x=pts.find(p=>p.id===id);modal(`<h2>🔒 Registrar bloqueio</h2><p>${x.n}<br><span style='color:#6d7f91'>${x.ccm} • ${x.cub}</span></p><label>Motivo</label><select id='mot'><option>Manutenção mecânica</option><option>Intervenção elétrica</option><option>Segurança</option><option>Inspeção</option><option>Outro</option></select><label>Responsável</label><input id='resp' placeholder='Nome'><label>Observação</label><textarea id='obs' placeholder='Descrição da atividade'></textarea><button class='btn danger' onclick='saveBlock(${id})'>🔒 Confirmar bloqueio</button><button class='btn gray' onclick='closeM()'>Cancelar</button>`)}async function saveBlock(id){if(!requireAuth()||!await verifyActiveAccess(true))return;const old=pts.find(p=>p.id===id);if(!old)return;const x={...old,s:'blocked',reason:document.getElementById('mot').value,resp:displayName(),obs:document.getElementById('obs').value,time:new Date().toISOString()};if(!(await saveEquipment(x)))return;Object.assign(old,x);const logged=await saveHistory(x,'Bloqueio registrado',displayName());await refreshHistory();closeM();toast(logged?'Bloqueio registrado e salvo':'Bloqueio salvo, mas houve falha no histórico');setTimeout(()=>detail(id),500)}
 function endBlock(id){if(!requireAuth())return;let x=pts.find(p=>p.id===id);modal(`<h2>✅ Encerrar bloqueio</h2><p>Confirma a liberação?</p><b>${x.n}</b><p class='sub'>${x.ccm} • ${x.cub}</p><textarea id='eo' placeholder='Observação do encerramento'></textarea><button class='btn success' onclick='confirmEnd(${id})'>✅ Confirmar encerramento</button><button class='btn gray' onclick='closeM()'>Cancelar</button>`)}async function confirmEnd(id){if(!requireAuth()||!await verifyActiveAccess(true))return;const old=pts.find(p=>p.id===id);if(!old)return;const x={...old,s:'free',obs:document.getElementById('eo').value||'Bloqueio encerrado',resp:displayName(),time:new Date().toISOString()};if(!(await saveEquipment(x)))return;Object.assign(old,x);const logged=await saveHistory(x,'Bloqueio encerrado',displayName());await refreshHistory();closeM();toast(logged?'Ponto liberado e salvo':'Ponto liberado, mas houve falha no histórico');setTimeout(()=>detail(id),500)}
-function history(){nav(4);M.innerHTML=head('▤ Histórico','Consulte os eventos por dia ou período')+`<div class='card'><label>Dia específico</label><input id='hd' type='date' onchange='hf()'><div class='grid2'><div><label>De</label><input id='hfrom' type='date' onchange='hf()'></div><div><label>Até</label><input id='hto' type='date' onchange='hf()'></div></div><button class='btn light' onclick='clearHistoryDates()'>Limpar datas</button><label>Pesquisar equipamento</label><input id='hq' oninput='hf()' placeholder='Nome, CCM ou CUB'><label>Tipo de evento</label><select id='hs' onchange='hf()'><option value=''>Todos os eventos</option><option>Bloqueio registrado</option><option>Bloqueio encerrado</option></select></div><div id='hist'></div>`;hf()}
+function history(){nav(4);M.innerHTML=head('▤ Histórico','Consulte os eventos por dia ou período')+`<div class='card'><label>Dia específico</label><input id='hd' type='date' onchange='historyDayChanged()'><div class='grid2'><div><label>De</label><input id='hfrom' type='date' onchange='historyRangeChanged()'></div><div><label>Até</label><input id='hto' type='date' onchange='historyRangeChanged()'></div></div><button class='btn light' onclick='clearHistoryDates()'>Limpar datas</button><label>Pesquisar equipamento</label><input id='hq' oninput='hf()' placeholder='Nome, CCM ou CUB'><label>Tipo de evento</label><select id='hs' onchange='hf()'><option value=''>Todos os eventos</option><option>Bloqueio registrado</option><option>Bloqueio encerrado</option></select></div><div id='hist'></div>`;hf()}
+function historyDayChanged(){
+  const day=document.getElementById('hd');
+  if(day?.value){const from=document.getElementById('hfrom');const to=document.getElementById('hto');if(from)from.value='';if(to)to.value='';}
+  hf();
+}
+function historyRangeChanged(){
+  const from=document.getElementById('hfrom');
+  const to=document.getElementById('hto');
+  if(from?.value||to?.value){const day=document.getElementById('hd');if(day)day.value='';}
+  hf();
+}
 function clearHistoryDates(){for(const id of ['hd','hfrom','hto']){const e=document.getElementById(id);if(e)e.value='';}hf()}
 function historyDateKey(value){
   if(!value)return '';
-  const raw=String(value);
-  // Compatibility with older sample values such as 07/10/2026 08:32.
+  const raw=String(value).trim();
+  // Valores antigos já armazenados no formato brasileiro.
   const br=raw.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
   if(br)return `${br[3]}-${br[2]}-${br[1]}`;
-  const d=new Date(value);
+  // Datas sem horário já são datas de calendário: não converter fuso.
+  const isoDate=raw.match(/^(\d{4}-\d{2}-\d{2})(?:$|[ T])/);
+  if(isoDate && !/[T ]\d{2}:\d{2}/.test(raw))return isoDate[1];
+  const d=new Date(raw);
   if(Number.isNaN(d.getTime()))return '';
-  const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');
-  return `${y}-${m}-${day}`;
+  // Padroniza com a data exibida no Brasil, mesmo se o aparelho usar outro fuso.
+  const parts=new Intl.DateTimeFormat('en-CA',{
+    timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit',day:'2-digit'
+  }).formatToParts(d);
+  const part=k=>parts.find(p=>p.type===k)?.value||'';
+  return `${part('year')}-${part('month')}-${part('day')}`;
 }
 function hf(){
   const hist=document.getElementById('hist');
@@ -316,7 +352,10 @@ function hf(){
   const a=logs.filter(x=>{
     const text=(x.p.n+' '+x.p.ccm+' '+x.p.cub).toLowerCase();
     const d=historyDateKey(x.time);
-    const dateOK=day ? d===day : ((!from||d>=from)&&(!to||d<=to));
+    // Se o usuário preencher um intervalo, ele tem prioridade sobre o dia específico.
+    // O campo 'Dia específico' só é aplicado quando nenhum limite do intervalo foi informado.
+    const hasRange=Boolean(from||to);
+    const dateOK=hasRange ? ((!from||d>=from)&&(!to||d<=to)) : (!day||d===day);
     return text.includes(q)&&(!s||x.a===s)&&dateOK;
   });
   hist.innerHTML=a.map(x=>`<div class='item'><span class='badge ${x.a==='Bloqueio encerrado'?'bg':'br'}'>${x.a==='Bloqueio encerrado'?'ENCERRADO':'BLOQUEIO'}</span><b>${esc(x.p.n)}</b><small>${esc(x.p.ccm)} • ${esc(x.p.cub)}</small><small>${esc(fmtDate(x.time))} • ${esc(x.user)}</small></div>`).join('')||'<div class="card">Nenhum evento.</div>';
