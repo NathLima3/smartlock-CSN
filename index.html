@@ -2,13 +2,13 @@
 <style>
 :root{--n:#063b73;--b:#0876d1;--g:#08a66f;--r:#df3037;--o:#e88918;--bg:#eef3f8;--t:#17324d;--m:#6d7f91;--l:#dbe4ed}*{box-sizing:border-box}body{margin:0;background:#dbe3ec;font-family:Arial;color:var(--t)}.app{max-width:430px;min-height:100vh;margin:auto;background:var(--bg);box-shadow:0 0 30px #0003}.hd{height:72px;background:linear-gradient(135deg,#052f5d,#0876d1);color:#fff;padding:14px 16px;display:flex;gap:10px;align-items:center;position:sticky;top:0;z-index:5}.logo{width:42px;height:42px;border-radius:10px;background:#fff;color:var(--n);display:grid;place-items:center;font-weight:900}.hd b{display:block}.hd small{font-size:10px;opacity:.8}main{padding:14px 14px 90px}.title{font-size:20px;font-weight:800}.sub{font-size:11px;color:var(--m);margin:4px 0 13px}.card{background:#fff;border:1px solid #edf1f5;border-radius:15px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px #19324d0d}.hero{background:linear-gradient(135deg,#063b73,#0876d1);color:#fff}.hero .muted{color:#d9e9f7}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.k{border-radius:13px;padding:12px;color:#fff;border:0;text-align:left;width:100%;font-family:inherit}.k b{font-size:24px;display:block}.k small{font-size:10px}.blue{background:var(--b)}.red{background:var(--r)}.green{background:var(--g)}.orange{background:var(--o)}button{cursor:pointer}.btn{border:0;border-radius:10px;padding:12px;width:100%;margin:4px 0;font-weight:700;font-size:13px}.primary{background:var(--b);color:#fff}.dark{background:var(--n);color:#fff}.success{background:var(--g);color:#fff}.danger{background:var(--r);color:#fff}.light{background:#eaf2fa;color:#07518f}.gray{background:#e8edf2;color:#40566b}input,select,textarea{width:100%;padding:11px;border:1px solid var(--l);border-radius:9px;margin:4px 0 9px;font-size:13px}textarea{min-height:75px}label{font-size:11px;color:var(--m);font-weight:bold}.item{background:#fff;border:1px solid var(--l);border-radius:12px;padding:12px;margin:8px 0;cursor:pointer}.item b{display:block;padding-right:85px;font-size:13px}.item small{display:block;color:var(--m);font-size:11px;margin-top:4px}.badge{float:right;border-radius:18px;padding:5px 8px;font-size:9px;font-weight:800}.br{background:#ffe0e2;color:#c71c25}.bg{background:#daf6e9;color:#08774f}.menu{display:grid;grid-template-columns:1fr 1fr;gap:8px}.menu button{min-height:70px;text-align:left;padding:11px;border:1px solid var(--l);border-radius:12px;background:#fff}.menu span{font-size:20px}.menu b{display:block;margin-top:5px}.nav{position:fixed;bottom:0;width:430px;max-width:100%;height:68px;background:#fff;border-top:1px solid var(--l);display:flex;justify-content:space-around;padding-top:7px;z-index:20}.nav button{border:0;background:none;color:#697b8e;font-size:9px}.nav b{display:block;font-size:18px}.on{color:#0876d1!important;font-weight:800}.qr{text-align:center;border:2px dashed #8ca0b3;border-radius:14px;padding:17px}.qrmark{font-size:65px}.timeline{border-left:2px solid #cbd7e3;margin-left:9px;padding-left:17px}.event{margin-bottom:15px}.event b{font-size:12px}.event small{display:block;color:var(--m);margin-top:3px}.toast{display:none;position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#17324d;color:#fff;padding:11px 16px;border-radius:10px;font-size:12px;z-index:50}.modal{display:none;position:fixed;inset:0;background:#0007;z-index:40;align-items:flex-end}.modalbox{background:#fff;width:430px;max-width:100%;margin:auto;border-radius:20px 20px 0 0;padding:18px;max-height:88vh;overflow:auto}
 
-/* Ajustes responsivos para desktop e tablet, mantendo o layout compacto no celular */
+/* Layout responsivo: mantém o celular compacto e aproveita a tela do PC */
 @media (min-width: 900px) {
   body { background:#e7edf4; }
-  .app { max-width:none; width:100%; min-height:100vh; margin:0; box-shadow:none; padding-left:230px; }
+  .app { max-width:none; width:100%; min-height:100vh; margin:0; padding-left:230px; box-shadow:none; }
   .hd { height:78px; padding:14px 30px; }
   .hd small { font-size:12px; }
-  main { padding:26px 30px 40px; max-width:1500px; margin:0 auto; }
+  main { padding:26px 30px 42px; max-width:1600px; margin:0 auto; }
   .title { font-size:26px; }
   .sub { font-size:13px; }
   .card { padding:20px; border-radius:17px; margin-bottom:18px; }
@@ -32,16 +32,14 @@
   .nav button b { display:inline-block; width:25px; font-size:20px; text-align:center; }
   .nav button.on { background:#e7f2ff; }
   .modal { align-items:center; padding:24px; }
-  .modalbox { width:min(620px, 100%); max-width:620px; margin:auto; border-radius:18px; max-height:90vh; padding:24px; box-shadow:0 20px 70px #0003; }
+  .modalbox { width:min(620px,100%); max-width:620px; margin:auto; border-radius:18px; max-height:90vh; padding:24px; box-shadow:0 20px 70px #0003; }
   .toast { bottom:24px; left:calc(50% + 115px); font-size:14px; }
 }
 @media (min-width: 1400px) {
   main { padding-left:42px; padding-right:42px; }
   .menu { grid-template-columns:repeat(4,minmax(180px,1fr)); }
 }
-@media (max-width: 899px) {
-  .app { width:100%; }
-}
+@media (max-width: 899px) { .app { width:100%; } }
 
 </style></head><body><div class='app'><header class='hd'><div class='logo'>CS</div><div style='flex:1'><b>SmartLock CSN</b><small>Controle inteligente de bloqueios • LAB Ideias</small></div><button id='authBtn' onclick='authDialog()' style='border:1px solid #ffffff80;background:#ffffff18;color:#fff;border-radius:8px;padding:8px;font-size:11px'>Entrar</button></header><main id='main'></main><nav class='nav'><button id='n0' onclick='home()'><b>⌂</b>Início</button><button id='n1' onclick='search()'><b>⌕</b>Pesquisar</button><button id='n2' onclick='qr()'><b>▦</b>QR Code</button><button id='n3' onclick='blocks()'><b>🔒</b>Bloqueios</button><button id='n4' onclick='history()'><b>▤</b>Histórico</button></nav></div><div id='toast' class='toast'></div><div id='modal' class='modal'><div id='mb' class='modalbox'></div></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
@@ -49,8 +47,9 @@
 const SUPABASE_URL = 'https://bwgealrkpqibcpnjakku.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_cWgdH-AXOycnLfIbCRSjkQ_TrgiKKOq';
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
-const ADMIN_USER_ID='d145843d-ec96-480e-b907-7e86faf39166';
-const EDGE_FUNCTIONS_URL=SUPABASE_URL+'/functions/v1';
+// ID público da conta administradora; a autorização real também é validada na Edge Function.
+const ADMIN_USER_ID = 'd145843d-ec96-480e-b907-7e86faf39166';
+const EDGE_FUNCTIONS_URL = SUPABASE_URL + '/functions/v1';
 // Segurança: este frontend pressupõe Auth por e-mail/senha e políticas RLS no Supabase. Veja o arquivo SQL de configuração fornecido separadamente.
 
 let pts=[
@@ -68,34 +67,70 @@ const esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'
 function requireAuth(){if(!currentUser){authDialog('Entre com sua conta autorizada para alterar equipamentos.');return false;}return true;}
 function updateAuthButton(){const b=document.getElementById('authBtn');if(b)b.textContent=currentUser?'Sair':'Entrar';const small=document.querySelector('.hd small');if(small)small.textContent=currentUser?('Conectado: '+displayName()+' • LAB Ideias'):'Controle inteligente de bloqueios • LAB Ideias';}
 
-function isAdmin(){return !!currentUser && currentUser.id===ADMIN_USER_ID;}
-function registerDialog(message=''){
- modal(`<h2>🪪 Cadastro da equipe</h2><p class='sub'>Use um convite individual fornecido pelo administrador.</p>${message?`<div class='card'>${esc(message)}</div>`:''}<label>Nome completo</label><input id='regName' maxlength='100' placeholder='Nome e sobrenome'><label>E-mail</label><input id='regEmail' type='email' placeholder='seu e-mail'><label>Senha (mínimo de 10 caracteres)</label><input id='regPassword' type='password' minlength='10' placeholder='Crie uma senha forte'><label>Código de convite</label><input id='regInvite' maxlength='80' placeholder='Código recebido'><button class='btn primary' onclick='registerWithInvite()'>Criar minha conta</button><button class='btn gray' onclick='authDialog()'>Voltar ao login</button>`);
-}
-async function registerWithInvite(){
- const full_name=document.getElementById('regName')?.value.trim()||'',email=document.getElementById('regEmail')?.value.trim()||'',password=document.getElementById('regPassword')?.value||'',invite_code=document.getElementById('regInvite')?.value.trim()||'';
- if(full_name.length<3||!email||password.length<10||!invite_code){toast('Preencha todos os campos; a senha deve ter pelo menos 10 caracteres.');return;}
- try{const response=await fetch(EDGE_FUNCTIONS_URL+'/register-with-invite',{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_PUBLISHABLE_KEY},body:JSON.stringify({full_name,email,password,invite_code})});const result=await response.json().catch(()=>({}));if(!response.ok)throw new Error(result.error||'Cadastro recusado. Confira o convite e os dados.');const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error)throw new Error('Conta criada, mas não foi possível entrar automaticamente.');currentUser=data.user;updateAuthButton();closeM();toast('Cadastro concluído.');home();}catch(e){registerDialog(e.message||'Não foi possível concluir o cadastro.');}
-}
-function inviteDialog(){if(!isAdmin()){toast('Somente o administrador pode gerar convites.');return;}modal(`<h2>🔑 Gerar convite individual</h2><p class='sub'>Código de uso único, válido por 7 dias.</p><button class='btn primary' onclick='createInvite()'>Gerar código</button><button class='btn gray' onclick='closeM()'>Cancelar</button>`);}
-async function adminRequest(action,extra={}){const {data}=await supabaseClient.auth.getSession();const token=data.session?.access_token;if(!token)throw new Error('Sessão expirada. Entre novamente.');const response=await fetch(EDGE_FUNCTIONS_URL+'/admin-manage',{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_PUBLISHABLE_KEY,'Authorization':'Bearer '+token},body:JSON.stringify({action,...extra})});const result=await response.json().catch(()=>({}));if(!response.ok)throw new Error(result.error||'Operação administrativa falhou.');return result;}
-async function createInvite(){if(!isAdmin()){toast('Somente o administrador pode gerar convites.');return;}try{const r=await adminRequest('create_invite');const code=String(r.invite_code||'');if(!code)throw new Error('O servidor não retornou o código.');window._smartlockInviteCode=code;modal(`<h2>✅ Convite criado</h2><p>Uso único e validade de 7 dias.</p><div class='card' style='font-size:18px;font-weight:800;word-break:break-all;text-align:center'>${esc(code)}</div><button class='btn primary' onclick='copyInviteCode()'>Copiar código</button><button class='btn gray' onclick='closeM()'>Fechar</button>`);}catch(e){toast(e.message||'Falha ao gerar convite.');}}
-async function copyInviteCode(){const code=window._smartlockInviteCode||'';if(!code)return;try{await navigator.clipboard.writeText(code);toast('Código copiado.');}catch(_){toast('Selecione e copie o código exibido.');}}
-async function adminUsers(){if(!isAdmin()){toast('Somente o administrador pode gerenciar usuários.');return;}try{const r=await adminRequest('list_users');modal(`<h2>👥 Gerenciar usuários</h2>${(r.users||[]).map(u=>`<div class='item'><b>${esc(u.full_name||'Sem nome')}</b><small>${esc(u.email||'Sem e-mail')}</small><small>${u.id===ADMIN_USER_ID?'Administrador':'Integrante'}</small>${u.id!==ADMIN_USER_ID?`<button class='btn danger' onclick='deleteAuthUser(${JSON.stringify(u.id)})'>Excluir cadastro</button>`:''}</div>`).join('')}<button class='btn gray' onclick='closeM()'>Fechar</button>`);}catch(e){toast(e.message||'Falha ao listar usuários.');}}
-async function deleteAuthUser(id){if(!isAdmin()||id===ADMIN_USER_ID||!confirm('Excluir definitivamente esta conta?'))return;try{await adminRequest('delete_user',{user_id:id});toast('Conta excluída.');adminUsers();}catch(e){toast(e.message||'Falha ao excluir conta.');}}
-async function archiveEquipment(id){if(!isAdmin()){toast('Somente o administrador pode remover equipamentos.');return;}const x=pts.find(p=>p.id===id);if(!x)return;if(x.s==='blocked'){toast('Encerre o bloqueio antes de remover.');return;}if(!confirm('Remover '+x.n+' da lista? O histórico será preservado.'))return;try{await adminRequest('archive_equipment',{equipment_id:id});pts=pts.filter(p=>p.id!==id);toast('Equipamento removido; histórico preservado.');home();}catch(e){toast(e.message||'Falha ao remover equipamento.');}}
-
-
 async function authDialog(message=''){
   if(currentUser){const {error}=await supabaseClient.auth.signOut();if(error){toast('Não foi possível sair');return;}currentUser=null;updateAuthButton();toast('Sessão encerrada');home();return;}
   modal(`<h2>🔐 Acesso da equipe</h2><p class='sub'>Somente usuários autorizados podem alterar os registros.</p>${message?`<div class='card'>${esc(message)}</div>`:''}<label>E-mail corporativo</label><input id='loginEmail' type='email' autocomplete='username' placeholder='nome@empresa.com'><label>Senha</label><input id='loginPassword' type='password' autocomplete='current-password' placeholder='Sua senha'><button class='btn primary' onclick='loginUser()'>Entrar</button><button class='btn light' onclick='registerDialog()'>Cadastrar com convite</button><button class='btn gray' onclick='closeM()'>Cancelar</button>`);
 }
+function isAdmin(){return !!currentUser && currentUser.id===ADMIN_USER_ID;}
+function registerDialog(message=''){
+  modal(`<h2>🪪 Cadastro da equipe</h2><p class='sub'>O cadastro exige um convite individual válido fornecido pelo administrador.</p>${message?`<div class='card'>${esc(message)}</div>`:''}<label>Nome completo</label><input id='regName' autocomplete='name' maxlength='100' placeholder='Nome e sobrenome'><label>E-mail</label><input id='regEmail' type='email' autocomplete='email' maxlength='254' placeholder='seu e-mail'><label>Senha (mínimo de 10 caracteres)</label><input id='regPassword' type='password' autocomplete='new-password' minlength='10' placeholder='Crie uma senha forte'><label>Código de convite</label><input id='regInvite' autocomplete='off' autocapitalize='characters' maxlength='80' placeholder='Código individual recebido'><button class='btn primary' onclick='registerWithInvite()'>Criar minha conta</button><button class='btn gray' onclick='authDialog()'>Voltar ao login</button>`);
+}
+async function registerWithInvite(){
+  const full_name=document.getElementById('regName')?.value.trim()||'';
+  const email=document.getElementById('regEmail')?.value.trim()||'';
+  const password=document.getElementById('regPassword')?.value||'';
+  const invite_code=document.getElementById('regInvite')?.value.trim()||'';
+  if(full_name.length<3||!email||password.length<10||!invite_code){toast('Preencha todos os campos; a senha deve ter pelo menos 10 caracteres.');return;}
+  const btn=document.querySelector('#mb button.primary');if(btn){btn.disabled=true;btn.textContent='Criando conta...';}
+  try{
+    const response=await fetch(EDGE_FUNCTIONS_URL+'/register-with-invite',{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_PUBLISHABLE_KEY},body:JSON.stringify({full_name,email,password,invite_code})});
+    const result=await response.json().catch(()=>({}));
+    if(!response.ok)throw new Error(result.error||'Cadastro recusado. Confira o convite e os dados.');
+    const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
+    if(error)throw new Error('Conta criada, mas não foi possível entrar automaticamente. Volte ao login e tente entrar.');
+    currentUser=data.user;updateAuthButton();closeM();toast('Cadastro concluído. Bem-vindo ao SmartLock CSN!');home();
+  }catch(e){console.error('registerWithInvite',e);registerDialog(e.message||'Não foi possível concluir o cadastro.');}
+}
+function inviteDialog(){
+  if(!isAdmin()){toast('Somente o administrador pode gerar convites.');return;}
+  modal(`<h2>🔑 Gerar convite individual</h2><p class='sub'>Código aleatório, de uso único e válido por 7 dias. Entregue somente ao funcionário autorizado.</p><button class='btn primary' onclick='createInvite()'>Gerar código</button><button class='btn gray' onclick='closeM()'>Cancelar</button>`);
+}
+async function adminRequest(action, extra={}){
+  const {data}=await supabaseClient.auth.getSession(); const token=data.session?.access_token;
+  if(!token) throw new Error('Sessão expirada. Entre novamente.');
+  const response=await fetch(EDGE_FUNCTIONS_URL+'/admin-manage',{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_PUBLISHABLE_KEY,'Authorization':'Bearer '+token},body:JSON.stringify({action,...extra})});
+  const result=await response.json().catch(()=>({})); if(!response.ok)throw new Error(result.error||'Operação administrativa falhou.'); return result;
+}
+async function createInvite(){
+  if(!isAdmin()){toast('Somente o administrador pode gerar convites.');return;}
+  try{const result=await adminRequest('create_invite');modal(`<h2>✅ Convite criado</h2><p>Entregue este código somente ao funcionário autorizado. Ele poderá ser usado uma vez e expira em 7 dias.</p><div class='card' style='font-size:18px;font-weight:800;word-break:break-all;text-align:center'>${esc(result.invite_code)}</div><button class='btn primary' onclick='copyInviteCode(${JSON.stringify(result.invite_code)})'>Copiar código</button><button class='btn gray' onclick='closeM()'>Fechar</button>`);}catch(e){toast(e.message);}
+}
+async function adminUsers(){if(!isAdmin()){toast('Apenas o administrador.');return;}try{const r=await adminRequest('list_users');modal(`<h2>👥 Gerenciar usuários</h2><p class='sub'>Excluir uma conta impede novo login. A ação é permanente.</p>${r.users.map(u=>`<div class='item'><b>${esc(u.full_name||'Sem nome')}</b><small>${esc(u.email||'Sem e-mail')}</small><small>${u.id===ADMIN_USER_ID?'Administrador':'Integrante'}</small>${u.id!==ADMIN_USER_ID?`<button class='btn danger' onclick='deleteAuthUser(${JSON.stringify(u.id)},${JSON.stringify(u.full_name||u.email||'usuário')})'>Excluir cadastro</button>`:''}</div>`).join('')}<button class='btn gray' onclick='closeM()'>Fechar</button>`);}catch(e){toast(e.message);}}
+async function deleteAuthUser(id,name){if(!isAdmin()||id===ADMIN_USER_ID)return;if(!confirm('Excluir definitivamente a conta de '+name+'?'))return;try{await adminRequest('delete_user',{user_id:id});toast('Conta excluída.');adminUsers();}catch(e){toast(e.message);}}
+async function archiveEquipment(id){
+  if(!isAdmin()){toast('Somente o administrador pode remover equipamentos.');return;}
+  const x=pts.find(p=>Number(p.id)===Number(id));
+  if(!x){toast('Equipamento não encontrado na lista.');return;}
+  if(x.s==='blocked'){toast('Encerre o bloqueio antes de remover o equipamento.');return;}
+  if(!confirm('Remover '+x.n+' da lista? O histórico será preservado.'))return;
+  try{
+    const result=await adminRequest('archive_equipment',{equipment_id:Number(id)});
+    pts=pts.filter(p=>Number(p.id)!==Number(id));
+    await refreshHistory();
+    toast(result.message||'Equipamento removido da lista; histórico preservado.');
+    home();
+  }catch(e){
+    console.error('archiveEquipment:',e);
+    toast(e.message||'Falha ao remover. Confira a função admin-manage e o banco.');
+  }
+}const x=pts.find(p=>p.id===id);if(!x)return;if(x.s==='blocked'){toast('Encerre o bloqueio antes de remover o equipamento.');return;}if(!confirm('Remover '+x.n+' da lista? O histórico será preservado.'))return;try{await adminRequest('archive_equipment',{equipment_id:id});pts=pts.filter(p=>p.id!==id);toast('Equipamento removido da lista; histórico preservado.');home();}catch(e){toast(e.message);}}
+async function copyInviteCode(code){try{await navigator.clipboard.writeText(code);toast('Código copiado. Envie apenas ao funcionário autorizado.');}catch(_){toast('Selecione e copie o código exibido.');}}
 async function loginUser(){const email=document.getElementById('loginEmail').value.trim(),password=document.getElementById('loginPassword').value;if(!email||!password){toast('Informe e-mail e senha');return;}const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error){toast('Login não realizado. Confira os dados.');return;}currentUser=data.user;updateAuthButton();closeM();toast('Acesso autorizado');home();}
 supabaseClient.auth.getSession().then(({data})=>{currentUser=data.session?.user||null;updateAuthButton();});
 supabaseClient.auth.onAuthStateChange((_event,session)=>{currentUser=session?.user||null;updateAuthButton();});
 
 async function loadFromSupabase(){
-  const {data, error}=await supabaseClient.from('equipamentos').select('*').order('id');
+  const {data, error}=await supabaseClient.from('equipamentos').select('*').eq('archived',false).order('id');
   if(error){ console.error(error); toast('Erro ao carregar dados do banco'); return; }
   if(data && data.length){
     pts=data.map(x=>({
@@ -126,21 +161,25 @@ async function loadFromSupabase(){
 }
 
 async function saveEquipment(x){
-  if(!currentUser){toast('Entre com uma conta autorizada.');return false;}
-  if(!isAdmin() && !pts.some(p=>Number(p.id)===Number(x.id))){toast('Acesso negado: somente o administrador pode cadastrar equipamentos.');return false;}
   const row={id:x.id,nome:x.n,ccm:x.ccm,area:x.area,cub:x.cub,tipo:x.type,status:x.s,
     motivo:x.reason||null,responsavel:x.resp||null,data_hora:x.time||null,observacao:x.obs||null};
-  const {error}=await supabaseClient.from('equipamentos').upsert(row);
+  const {id,...updates}=row;
+  const {error}=await supabaseClient.from('equipamentos').update(updates).eq('id',id);
   if(error){console.error(error);toast('Não foi possível salvar no banco');return false;}
   return true;
 }
 
 async function saveHistory(x, action, user){
+  // A tabela public.historico não possui a coluna usuario_id.
+  // Enviar apenas colunas existentes evita o erro 400/PGRST204.
   const {error}=await supabaseClient.from('historico').insert({
-    equipamento_id:x.id,acao:action,responsavel:user||'Operador',usuario_id:currentUser?.id||null,
-    data_hora:x.time||new Date().toISOString(),observacao:x.obs||null
+    equipamento_id:x.id,
+    acao:action,
+    responsavel:user||'Operador',
+    data_hora:x.time||new Date().toISOString(),
+    observacao:x.obs||null
   });
-  if(error){console.error(error);return false;}
+  if(error){console.error('Falha ao salvar histórico:',error);return false;}
   return true;
 }
 
@@ -158,6 +197,7 @@ supabaseClient.channel('smartlock-live')
     const r=payload.new;
     if(!r) return;
     const i=pts.findIndex(x=>x.id===Number(r.id));
+    if(r.archived===true){if(i>=0)pts.splice(i,1);if(document.getElementById('n0').classList.contains('on'))home();else if(document.getElementById('n3').classList.contains('on'))blocks();else if(document.getElementById('n4').classList.contains('on'))history();return;}
     const x={id:Number(r.id),n:r.nome,ccm:r.ccm||'',area:r.area||'',cub:r.cub||'',type:r.tipo||'Equipamento',
       s:r.status==='blocked'?'blocked':'free',reason:r.motivo||'',resp:r.responsavel||'',time:r.data_hora||'',obs:r.observacao||''};
     if(i>=0) pts[i]=x; else pts.push(x);
@@ -175,21 +215,122 @@ supabaseClient.channel('smartlock-live')
 
 
 const M=document.getElementById('main');function fmtDate(v){if(!v)return '—';const d=new Date(v);return Number.isNaN(d.getTime())?String(v):d.toLocaleString('pt-BR');}function nav(i){for(let j=0;j<5;j++)document.getElementById('n'+j).className=j===i?'on':''}function toast(x){let e=document.getElementById('toast');e.textContent=x;e.style.display='block';setTimeout(()=>e.style.display='none',2200)}function head(a,b){return `<div class='title'>${a}</div><div class='sub'>${b}</div>`}function card(x){return `<div class='item' onclick='detail(${x.id})'><span class='badge ${x.s==='blocked'?'br':'bg'}'>${x.s==='blocked'?'🔴 BLOQUEADO':'🟢 LIVRE'}</span><b>${esc(x.n)}</b><small>${esc(x.ccm)} • ${esc(x.area)}</small><small>${esc(x.cub)} • ${esc(x.type)}</small></div>`}
-function home(){nav(0);let b=pts.filter(x=>x.s==='blocked').length;M.innerHTML=head('Painel operacional','Visão geral do sistema')+`<div class='card hero'><b style='font-size:18px'>Controle de Bloqueios</b><p class='muted'>Consulte o ponto antes de iniciar qualquer intervenção.</p><button class='btn' style='background:#fff;color:#07518f' onclick='search()'>🔎 Fazer consulta</button></div><div class='grid2'><button class='k red' onclick='blocks()'><b>${b}</b><small>Bloqueios ativos · Ver lista</small></button><button class='k green' onclick='freePoints()'><b>${pts.length-b}</b><small>Pontos livres · Ver lista</small></button></div><br><div class='grid3'><button class='k blue' onclick='search()'><b>${pts.length}</b><small>Pontos · Pesquisar</small></button><button class='k orange' onclick='history()'><b>${logs.length}</b><small>Eventos · Histórico</small></button><button class='k blue' onclick='ccmList()'><b>${new Set(pts.map(x=>x.ccm).filter(Boolean)).size}</b><small>CCMs · Abrir lista</small></button></div><div class='card'><b>Acesso rápido</b><div class='menu' style='margin-top:10px'><button onclick='qr()'><span>▦</span><b>Ler QR Code</b></button>${isAdmin()?`<button onclick='newPoint()'><span>➕</span><b>Cadastrar equipamento</b></button><button onclick='inviteDialog()'><span>🔑</span><b>Gerar convite</b></button><button onclick='adminUsers()'><span>👥</span><b>Gerenciar usuários</b></button>`:''}<button onclick='blocks()'><span>🔒</span><b>Bloqueios</b></button><button onclick='history()'><span>▤</span><b>Histórico</b></button><button onclick='ccmList()'><span>⚙️</span><b>Consultar CCMs</b></button></div></div><div class='card'><b>Últimos eventos</b>${logs.slice(0,3).map(x=>`<p style='font-size:11px;border-bottom:1px solid #eee;padding-bottom:8px'><b>${x.a}</b><br>${x.p.n}<br><span style='color:#6d7f91'>${x.time} • ${x.user}</span></p>`).join('')}</div>`}
-function search(){nav(1);M.innerHTML=head('🔎 Pesquisa de pontos','Equipamento, CCM, CUB, área ou tipo')+`<div class='card'><input id='q' oninput='filter()' placeholder='Ex.: CCM#14, CUB.B05, Vibrador'><select id='sf' onchange='filter()'><option value=''>Todos os status</option><option value='free'>🟢 Livres</option><option value='blocked'>🔴 Bloqueados</option></select></div><div id='res'></div>`;filter()}function filter(){let q=(document.getElementById('q')?.value||'').toLowerCase(),s=document.getElementById('sf')?.value||'';let a=pts.filter(x=>(x.n+' '+x.ccm+' '+x.cub+' '+x.area+' '+x.type).toLowerCase().includes(q)&&(!s||x.s===s));document.getElementById('res').innerHTML=a.length?a.map(card).join(''):'<div class="card">Nenhum ponto encontrado.</div>'}
-function detail(id){let x=pts.find(p=>p.id===id);if(!x){toast('Equipamento não encontrado.');return;}M.innerHTML=head('Detalhes do ponto','Identificação e situação operacional')+`<div class='card'><span class='badge ${x.s==='blocked'?'br':'bg'}'>${x.s==='blocked'?'🔴 BLOQUEADO':'🟢 PONTO LIVRE'}</span><b>${esc(x.n)}</b><p class='sub'>${esc(x.ccm)} • ${esc(x.area)} • ${esc(x.cub)}</p><div class='grid2'><div><label>CCM</label><p>${x.ccm}</p></div><div><label>CUB</label><p>${x.cub}</p></div><div><label>Tipo</label><p>${x.type}</p></div><div><label>Status</label><p>${x.s}</p></div></div>${x.s==='blocked'?`<div class='card' style='background:#fff2f2'><b>Bloqueio ativo</b><p><b>Motivo:</b> ${esc(x.reason)}</p><p><b>Responsável:</b> ${esc(x.resp)}</p><p><b>Data/hora:</b> ${esc(fmtDate(x.time))}</p><p><b>Observação:</b> ${esc(x.obs)}</p></div>`:''}<button class='btn ${x.s==='blocked'?'success':'dark'}' onclick='${x.s==='blocked'?`endBlock(${x.id})`:`openBlock(${x.id})`}'>${x.s==='blocked'?'✅ Encerrar bloqueio':'🔒 Registrar bloqueio'}</button><button class='btn light' onclick='qrPoint(${x.id})'>▦ QR Code do ponto</button>${isAdmin()&&x.s==='free'?`<button class='btn danger' onclick='archiveEquipment(${x.id})'>Remover equipamento da lista</button>`:''}</div>`}
-function blocks(){nav(3);let a=pts.filter(x=>x.s==='blocked');M.innerHTML=head('🔒 Bloqueios ativos','Gestão dos pontos atualmente bloqueados')+`<div class='card grid2'><div><b style='font-size:24px;color:#df3037'>${a.length}</b><small style='display:block'>Ativos</small></div><div><b style='font-size:24px;color:#08a66f'>${pts.length-a.length}</b><small style='display:block'>Livres</small></div></div>`+(a.length?a.map(card).join(''):'<div class="card">Nenhum bloqueio ativo.</div>')}
-function freePoints(){nav(1);const a=pts.filter(x=>x.s==='free');M.innerHTML=head('🟢 Pontos livres','Equipamentos disponíveis para consulta')+(a.length?a.map(card).join(''):'<div class="card">Nenhum ponto livre.</div>');}
-function ccmList(){nav(1);const groups=[...new Set(pts.map(x=>String(x.ccm||'').trim()).filter(Boolean))].sort();M.innerHTML=head('⚙️ CCMs','Selecione um CCM para consultar os equipamentos')+(groups.length?groups.map(c=>`<div class='item' onclick='ccmDetail(${JSON.stringify(c)})'><b>${esc(c)}</b><small>${pts.filter(x=>x.ccm===c).length} equipamento(s)</small></div>`).join(''):'<div class="card">Nenhum CCM cadastrado.</div>');}
-function ccmDetail(ccm){const a=pts.filter(x=>x.ccm===ccm);M.innerHTML=head(esc(ccm),'Equipamentos associados ao CCM')+`<button class='btn light' onclick='ccmList()'>← Voltar aos CCMs</button>`+(a.length?a.map(card).join(''):'<div class="card">Nenhum equipamento neste CCM.</div>');}
+function home(){
+  nav(0);
+  const blocked=pts.filter(x=>x.s==='blocked').length;
+  const free=pts.filter(x=>x.s==='free').length;
+  const ccmCount=[...new Set(pts.map(x=>String(x.ccm||'').trim()).filter(Boolean))].length;
+  M.innerHTML=head('Painel operacional','Visão geral do sistema')+
+  `<div class='card hero'><b style='font-size:18px'>Controle de Bloqueios</b><p class='muted'>Consulte o ponto antes de iniciar qualquer intervenção.</p><button class='btn' style='background:#fff;color:#07518f' onclick='search()'>🔎 Fazer consulta</button></div>
+  <div class='grid2'>
+    <button class='k red' onclick='blocks()'><b>${blocked}</b><small>Bloqueios ativos · Ver lista</small></button>
+    <button class='k green' onclick='freePoints()'><b>${free}</b><small>Pontos livres · Ver lista</small></button>
+  </div><br>
+  <div class='grid3'>
+    <button class='k blue' onclick='search()'><b>${pts.length}</b><small>Pontos · Inspecionar</small></button>
+    <button class='k orange' onclick='history()'><b>${logs.length}</b><small>Eventos · Histórico</small></button>
+    <button class='k blue' onclick='ccms()'><b>${ccmCount}</b><small>CCMs · Ver lista</small></button>
+  </div>
+  <div class='card'><b>Acesso rápido</b><div class='menu' style='margin-top:10px'>
+    <button onclick='qr()'><span>▦</span><b>Ler QR Code</b></button>
+    ${isAdmin()?`${isAdmin()?`<button onclick='newPoint()'><span>➕</span><b>Cadastrar equipamento</b></button>`:''}`:''}
+    <button onclick='ccms()'><span>⚡</span><b>CCMs</b></button>
+    <button onclick='blocks()'><span>🔒</span><b>Bloqueios ativos</b></button>
+    <button onclick='freePoints()'><span>🟢</span><b>Pontos livres</b></button>
+    <button onclick='history()'><span>▤</span><b>Histórico</b></button>
+  </div></div>
+  <div class='card'><b>Últimos eventos</b>${logs.slice(0,3).map(x=>`<p style='font-size:11px;border-bottom:1px solid #eee;padding-bottom:8px'><b>${esc(x.a)}</b><br>${esc(x.p.n)}<br><span style='color:#6d7f91'>${esc(fmtDate(x.time))} • ${esc(x.user)}</span></p>`).join('')}</div>`;
+  if(isAdmin()) M.insertAdjacentHTML('afterbegin',`<button id='inviteAdminBtn' class='btn light' onclick='inviteDialog()'>🔑 Gerar convite individual</button><button class='btn light' onclick='adminUsers()'>👥 Gerenciar usuários</button>`);
+}
+function search(){nav(1);M.innerHTML=head('🔎 Pesquisa de pontos','Equipamento, CCM, CUB, área ou tipo')+`<div class='card'><input id='q' oninput='filter()' placeholder='Ex.: CCM#14, CUB.B05, Vibrador'><select id='sf' onchange='filter()'><option value=''>Todos os status</option><option value='free'>🟢 Livres</option><option value='blocked'>🔴 Bloqueados</option></select></div><div id='res'></div>`;filter()}
+function filter(){
+  const result=document.getElementById('res');
+  // Realtime pode disparar quando a tela de pesquisa não está aberta.
+  if(!result)return;
+  const q=(document.getElementById('q')?.value||'').toLowerCase();
+  const s=document.getElementById('sf')?.value||'';
+  const a=pts.filter(x=>(x.n+' '+x.ccm+' '+x.cub+' '+x.area+' '+x.type).toLowerCase().includes(q)&&(!s||x.s===s));
+  result.innerHTML=a.length?a.map(card).join(''):'<div class="card">Nenhum ponto encontrado.</div>';
+}
+function ccms(){
+  nav(0);
+  const names=[...new Set(pts.map(x=>String(x.ccm||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR',{numeric:true,sensitivity:'base'}));
+  M.innerHTML=head('⚡ CCMs','Selecione um CCM para ver somente os equipamentos cadastrados nele')+
+    (names.length?names.map(name=>{
+      const items=pts.filter(x=>String(x.ccm||'').trim()===name);
+      const blocked=items.filter(x=>x.s==='blocked').length;
+      return `<div class='item' onclick='ccmDetails(${JSON.stringify(name)})'><span class='badge ${blocked?'br':'bg'}'>${blocked} bloqueado(s)</span><b>${esc(name)}</b><small>${items.length} equipamento(s) • ${items.length-blocked} livre(s)</small></div>`;
+    }).join(''):'<div class="card">Ainda não há CCMs cadastrados.</div>')+
+    `<button class='btn gray' onclick='home()'>Voltar ao início</button>`;
+}
+function ccmDetails(name){
+  const items=pts.filter(x=>String(x.ccm||'').trim()===String(name).trim());
+  const blocked=items.filter(x=>x.s==='blocked').length;
+  M.innerHTML=head('⚡ '+esc(name),'Somente equipamentos cadastrados neste CCM')+
+    `<div class='card grid2'><div><b style='font-size:22px;color:#df3037'>${blocked}</b><small style='display:block'>Bloqueados</small></div><div><b style='font-size:22px;color:#08a66f'>${items.length-blocked}</b><small style='display:block'>Livres</small></div></div>`+
+    (items.length?items.map(card).join(''):'<div class="card">Nenhum equipamento cadastrado neste CCM.</div>')+
+    `<button class='btn light' onclick='ccms()'>Voltar à lista de CCMs</button>`;
+}
+function detail(id){let x=pts.find(p=>p.id===id);M.innerHTML=head('Detalhes do ponto','Identificação e situação operacional')+`<div class='card'><span class='badge ${x.s==='blocked'?'br':'bg'}'>${x.s==='blocked'?'🔴 BLOQUEADO':'🟢 PONTO LIVRE'}</span><b>${esc(x.n)}</b><p class='sub'>${esc(x.ccm)} • ${esc(x.area)} • ${esc(x.cub)}</p><div class='grid2'><div><label>CCM</label><p>${x.ccm}</p></div><div><label>CUB</label><p>${x.cub}</p></div><div><label>Tipo</label><p>${x.type}</p></div><div><label>Status</label><p>${x.s}</p></div></div>${x.s==='blocked'?`<div class='card' style='background:#fff2f2'><b>Bloqueio ativo</b><p><b>Motivo:</b> ${esc(x.reason)}</p><p><b>Responsável:</b> ${esc(x.resp)}</p><p><b>Data/hora:</b> ${esc(fmtDate(x.time))}</p><p><b>Observação:</b> ${esc(x.obs)}</p></div>`:''}<button class='btn ${x.s==='blocked'?'success':'dark'}' onclick='${x.s==='blocked'?`endBlock(${x.id})`:`openBlock(${x.id})`}'>${x.s==='blocked'?'✅ Encerrar bloqueio':'🔒 Registrar bloqueio'}</button><button class='btn light' onclick='qrPoint(${x.id})'>▦ QR Code do ponto</button>${isAdmin()?`<button class='btn danger' onclick='archiveEquipment(${x.id})'>Remover equipamento (ADM)</button>`:''}</div>`}
+function statusTabs(active){return `<div class='grid2' style='margin-bottom:12px'><button class='btn ${active==='blocked'?'danger':'light'}' onclick='blocks()'>🔒 Bloqueados</button><button class='btn ${active==='free'?'success':'light'}' onclick='freePoints()'>🟢 Livres</button></div>`}
+function blocks(){nav(3);let a=pts.filter(x=>x.s==='blocked');M.innerHTML=head('🔒 Bloqueios ativos','Equipamentos atualmente bloqueados')+statusTabs('blocked')+`<div class='card grid2'><div><b style='font-size:24px;color:#df3037'>${a.length}</b><small style='display:block'>Bloqueados</small></div><div><b style='font-size:24px;color:#08a66f'>${pts.length-a.length}</b><small style='display:block'>Livres</small></div></div>`+(a.length?a.map(card).join(''):'<div class="card">Nenhum bloqueio ativo.</div>')}
+function freePoints(){nav(3);let a=pts.filter(x=>x.s==='free');M.innerHTML=head('🟢 Equipamentos livres','Pontos atualmente sem bloqueio registrado')+statusTabs('free')+`<div class='card grid2'><div><b style='font-size:24px;color:#08a66f'>${a.length}</b><small style='display:block'>Livres</small></div><div><b style='font-size:24px;color:#df3037'>${pts.length-a.length}</b><small style='display:block'>Bloqueados</small></div></div>`+(a.length?a.map(card).join(''):'<div class="card">Nenhum equipamento livre encontrado.</div>')}
 function openBlock(id){if(!requireAuth())return;let x=pts.find(p=>p.id===id);modal(`<h2>🔒 Registrar bloqueio</h2><p>${x.n}<br><span style='color:#6d7f91'>${x.ccm} • ${x.cub}</span></p><label>Motivo</label><select id='mot'><option>Manutenção mecânica</option><option>Intervenção elétrica</option><option>Segurança</option><option>Inspeção</option><option>Outro</option></select><label>Responsável</label><input id='resp' placeholder='Nome'><label>Observação</label><textarea id='obs' placeholder='Descrição da atividade'></textarea><button class='btn danger' onclick='saveBlock(${id})'>🔒 Confirmar bloqueio</button><button class='btn gray' onclick='closeM()'>Cancelar</button>`)}async function saveBlock(id){if(!requireAuth())return;const old=pts.find(p=>p.id===id);if(!old)return;const x={...old,s:'blocked',reason:document.getElementById('mot').value,resp:displayName(),obs:document.getElementById('obs').value,time:new Date().toISOString()};if(!(await saveEquipment(x)))return;Object.assign(old,x);const logged=await saveHistory(x,'Bloqueio registrado',displayName());await refreshHistory();closeM();toast(logged?'Bloqueio registrado e salvo':'Bloqueio salvo, mas houve falha no histórico');setTimeout(()=>detail(id),500)}
 function endBlock(id){if(!requireAuth())return;let x=pts.find(p=>p.id===id);modal(`<h2>✅ Encerrar bloqueio</h2><p>Confirma a liberação?</p><b>${x.n}</b><p class='sub'>${x.ccm} • ${x.cub}</p><textarea id='eo' placeholder='Observação do encerramento'></textarea><button class='btn success' onclick='confirmEnd(${id})'>✅ Confirmar encerramento</button><button class='btn gray' onclick='closeM()'>Cancelar</button>`)}async function confirmEnd(id){if(!requireAuth())return;const old=pts.find(p=>p.id===id);if(!old)return;const x={...old,s:'free',obs:document.getElementById('eo').value||'Bloqueio encerrado',resp:displayName(),time:new Date().toISOString()};if(!(await saveEquipment(x)))return;Object.assign(old,x);const logged=await saveHistory(x,'Bloqueio encerrado',displayName());await refreshHistory();closeM();toast(logged?'Ponto liberado e salvo':'Ponto liberado, mas houve falha no histórico');setTimeout(()=>detail(id),500)}
-function history(){nav(4);M.innerHTML=head('▤ Histórico','Rastreabilidade dos eventos')+`<div class='card'><input id='hq' oninput='hf()' placeholder='Pesquisar evento...'><select id='hs' onchange='hf()'><option value=''>Todos</option><option>Bloqueio registrado</option><option>Bloqueio encerrado</option></select></div><div id='hist'></div>`;hf()}function hf(){let q=(document.getElementById('hq')?.value||'').toLowerCase(),s=document.getElementById('hs')?.value||'';let a=logs.filter(x=>(x.p.n+' '+x.p.ccm+' '+x.p.cub).toLowerCase().includes(q)&&(!s||x.a===s));document.getElementById('hist').innerHTML=a.map(x=>`<div class='item'><span class='badge ${x.a==='Bloqueio encerrado'?'bg':'br'}'>${x.a==='Bloqueio encerrado'?'ENCERRADO':'BLOQUEIO'}</span><b>${esc(x.p.n)}</b><small>${esc(x.p.ccm)} • ${esc(x.p.cub)}</small><small>${esc(fmtDate(x.time))} • ${esc(x.user)}</small></div>`).join('')||'<div class="card">Nenhum evento.</div>'}
+function history(){nav(4);M.innerHTML=head('▤ Histórico','Consulte os eventos por dia ou período')+`<div class='card'><label>Dia específico</label><input id='hd' type='date' onchange='hf()'><div class='grid2'><div><label>De</label><input id='hfrom' type='date' onchange='hf()'></div><div><label>Até</label><input id='hto' type='date' onchange='hf()'></div></div><button class='btn light' onclick='clearHistoryDates()'>Limpar datas</button><label>Pesquisar equipamento</label><input id='hq' oninput='hf()' placeholder='Nome, CCM ou CUB'><label>Tipo de evento</label><select id='hs' onchange='hf()'><option value=''>Todos os eventos</option><option>Bloqueio registrado</option><option>Bloqueio encerrado</option></select></div><div id='hist'></div>`;hf()}
+function clearHistoryDates(){for(const id of ['hd','hfrom','hto']){const e=document.getElementById(id);if(e)e.value='';}hf()}
+function historyDateKey(value){
+  if(!value)return '';
+  const raw=String(value);
+  // Compatibility with older sample values such as 07/10/2026 08:32.
+  const br=raw.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+  if(br)return `${br[3]}-${br[2]}-${br[1]}`;
+  const d=new Date(value);
+  if(Number.isNaN(d.getTime()))return '';
+  const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+function hf(){
+  const hist=document.getElementById('hist');
+  // Não tente atualizar a tela de histórico se ela não estiver montada.
+  if(!hist)return;
+  const q=(document.getElementById('hq')?.value||'').toLowerCase();
+  const s=document.getElementById('hs')?.value||'';
+  const day=document.getElementById('hd')?.value||'';
+  const from=document.getElementById('hfrom')?.value||'';
+  const to=document.getElementById('hto')?.value||'';
+  const a=logs.filter(x=>{
+    const text=(x.p.n+' '+x.p.ccm+' '+x.p.cub).toLowerCase();
+    const d=historyDateKey(x.time);
+    const dateOK=day ? d===day : ((!from||d>=from)&&(!to||d<=to));
+    return text.includes(q)&&(!s||x.a===s)&&dateOK;
+  });
+  hist.innerHTML=a.map(x=>`<div class='item'><span class='badge ${x.a==='Bloqueio encerrado'?'bg':'br'}'>${x.a==='Bloqueio encerrado'?'ENCERRADO':'BLOQUEIO'}</span><b>${esc(x.p.n)}</b><small>${esc(x.p.ccm)} • ${esc(x.p.cub)}</small><small>${esc(fmtDate(x.time))} • ${esc(x.user)}</small></div>`).join('')||'<div class="card">Nenhum evento.</div>';
+}
 function qr(){nav(2);M.innerHTML=head('▦ QR Code','Gere um código real para consulta')+`<div class='card'><label>Escolha o equipamento</label><select id='qrSelect' onchange='renderSystemQR()'><option value=''>Selecione...</option>${pts.map(x=>`<option value='${x.id}'>${esc(x.n)} — ${esc(x.ccm)}</option>`).join('')}</select><div class='qr'><div id='qrCanvas' style='display:flex;justify-content:center;min-height:30px'></div><b id='qrLabel'>QR Code do equipamento</b><p class='sub'>O QR abre o endereço público do site diretamente no equipamento selecionado.</p><button class='btn primary' onclick='printQR()'>Imprimir QR Code</button></div></div>`;const id=new URLSearchParams(location.search).get('equipamento');if(id&&pts.some(x=>String(x.id)===id)){document.getElementById('qrSelect').value=id;renderSystemQR();} }
 function renderSystemQR(){const id=document.getElementById('qrSelect')?.value,box=document.getElementById('qrCanvas'),label=document.getElementById('qrLabel');if(!box)return;box.innerHTML='';if(!id){label.textContent='QR Code do equipamento';return;}const x=pts.find(p=>String(p.id)===String(id));if(!x)return;label.textContent=x.n;const u=new URL(location.href);u.search='';u.hash='';u.searchParams.set('equipamento',x.id);if(window.QRCode){new QRCode(box,{text:u.toString(),width:190,height:190,correctLevel:QRCode.CorrectLevel.M});}else{box.textContent='Biblioteca de QR Code indisponível. Verifique sua conexão.';}}
 function printQR(){if(!document.getElementById('qrCanvas')?.querySelector('canvas, img')){toast('Selecione um equipamento primeiro');return;}window.print();}
 function qrPoint(id){nav(2);M.innerHTML=head('▦ QR Code do equipamento','Código para abrir a consulta do equipamento')+`<div class='card'><div class='qr'><div id='qrCanvas' style='display:flex;justify-content:center'></div><b id='qrLabel'></b><p class='sub'></p><button class='btn primary' onclick='printQR()'>Imprimir QR Code</button><button class='btn light' onclick='detail(${Number(id)})'>Voltar ao equipamento</button></div></div>`;const x=pts.find(p=>p.id===id);if(!x)return;document.getElementById('qrLabel').textContent=x.n;document.querySelector('.qr .sub').textContent=`${x.ccm} • ${x.cub}`;const u=new URL(location.href);u.search='';u.hash='';u.searchParams.set('equipamento',x.id);if(window.QRCode)new QRCode(document.getElementById('qrCanvas'),{text:u.toString(),width:190,height:190,correctLevel:QRCode.CorrectLevel.M});}
 function openLinkedEquipment(){const id=new URLSearchParams(location.search).get('equipamento');if(id){const x=pts.find(p=>String(p.id)===id);if(x)detail(x.id);else toast('Equipamento do QR não encontrado');}}
-function newPoint(){if(!isAdmin()){toast('Somente o administrador pode cadastrar equipamentos.');if(!currentUser)authDialog();return;}modal(`<h2>➕ Cadastrar equipamento</h2><label>Equipamento</label><input id='nn' placeholder='Nome do equipamento'><label>CCM</label><input id='nc' placeholder='Ex.: CCM#14'><label>CUB</label><input id='nb' placeholder='Ex.: CUB.B05'><label>Área</label><input id='na' value='C.C. LESTE 3'><label>Tipo</label><input id='nt' placeholder='Ex.: Motor'><button class='btn dark' onclick='createPoint()'>➕ Cadastrar</button><button class='btn gray' onclick='closeM()'>Cancelar</button>`)}async function createPoint(){if(!isAdmin()){closeM();toast('Acesso negado: somente o administrador pode cadastrar equipamentos.');return;}const nome=document.getElementById('nn').value.trim();if(!nome){toast('Informe o nome do equipamento');return;}let x={id:Date.now(),n:nome,ccm:document.getElementById('nc').value.trim(),area:document.getElementById('na').value.trim(),cub:document.getElementById('nb').value.trim(),type:document.getElementById('nt').value.trim()||'Equipamento',s:'free'};if(!x.ccm){toast('Informe o CCM');return;}if(!(await saveEquipment(x)))return;pts.push(x);closeM();toast('Equipamento cadastrado e salvo');setTimeout(()=>detail(x.id),500)}function modal(x){document.getElementById('mb').innerHTML=x;document.getElementById('modal').style.display='flex'}function closeM(){document.getElementById('modal').style.display='none'}home();
+function newPoint(){
+  if(!isAdmin()){toast('Somente o administrador pode cadastrar equipamentos.');return;}
+  modal(`<h2>➕ Cadastrar equipamento</h2><label>Equipamento</label><input id='nn' placeholder='Nome do equipamento'><label>CCM</label><input id='nc' placeholder='Ex.: CCM#14'><label>CUB</label><input id='nb' placeholder='Ex.: CUB.B05'><label>Área</label><input id='na' placeholder='Ex.: C.C. LESTE 3'><label>Tipo</label><input id='nt' placeholder='Ex.: Motor'><button class='btn dark' onclick='createPoint()'>➕ Cadastrar</button><button class='btn gray' onclick='closeM()'>Cancelar</button>`);
+}
+async function createPoint(){
+  if(!isAdmin()){toast('Somente o administrador pode cadastrar equipamentos.');return;}
+  const nome=document.getElementById('nn')?.value.trim()||'';
+  const ccm=document.getElementById('nc')?.value.trim()||'';
+  if(!nome){toast('Informe o nome do equipamento');return;}
+  if(!ccm){toast('Informe o CCM');return;}
+  const payload={nome,ccm,area:document.getElementById('na')?.value.trim()||'',cub:document.getElementById('nb')?.value.trim()||'',tipo:document.getElementById('nt')?.value.trim()||'Equipamento'};
+  const btn=document.querySelector('#mb button.dark');if(btn){btn.disabled=true;btn.textContent='Cadastrando...';}
+  try{
+    const result=await adminRequest('create_equipment',payload);
+    const row=result.equipment;
+    const x={id:Number(row.id),n:row.nome,ccm:row.ccm||'',area:row.area||'',cub:row.cub||'',type:row.tipo||'Equipamento',s:row.status==='blocked'?'blocked':'free',reason:row.motivo||'',resp:row.responsavel||'',time:row.data_hora||'',obs:row.observacao||''};
+    const i=pts.findIndex(p=>p.id===x.id);if(i>=0)pts[i]=x;else pts.push(x);
+    closeM();toast('Equipamento cadastrado e salvo');setTimeout(()=>detail(x.id),300);
+  }catch(e){toast(e.message||'Não foi possível cadastrar equipamento.');if(btn){btn.disabled=false;btn.textContent='➕ Cadastrar';}}
+}function modal(x){document.getElementById('mb').innerHTML=x;document.getElementById('modal').style.display='flex'}function closeM(){document.getElementById('modal').style.display='none'}home();
 loadFromSupabase();
 </script></body></html>
