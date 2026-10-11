@@ -70,14 +70,14 @@ async function authDialog(message=''){
 }
 function isAdmin(){return !!currentUser && currentUser.id===ADMIN_USER_ID;}
 function registerDialog(message=''){
-  modal(`<h2>🪪 Cadastro da equipe</h2><p class='sub'>O cadastro exige um convite individual válido fornecido pelo administrador.</p>${message?`<div class='card'>${esc(message)}</div>`:''}<label>Nome completo</label><input id='regName' autocomplete='name' maxlength='100' placeholder='Nome e sobrenome'><label>E-mail</label><input id='regEmail' type='email' autocomplete='email' maxlength='254' placeholder='seu e-mail'><label>Senha (mínimo de 10 caracteres)</label><input id='regPassword' type='password' autocomplete='new-password' minlength='10' placeholder='Crie uma senha forte'><label>Código de convite</label><input id='regInvite' autocomplete='off' autocapitalize='characters' maxlength='80' placeholder='Código individual recebido'><button class='btn primary' onclick='registerWithInvite()'>Criar minha conta</button><button class='btn gray' onclick='authDialog()'>Voltar ao login</button>`);
+  modal(`<h2>🪪 Cadastro da equipe</h2><p class='sub'>O cadastro exige um convite individual válido fornecido pelo administrador.</p>${message?`<div class='card'>${esc(message)}</div>`:''}<label>Nome completo</label><input id='regName' autocomplete='name' maxlength='100' placeholder='Nome e sobrenome'><label>E-mail</label><input id='regEmail' type='email' autocomplete='email' maxlength='254' placeholder='seu e-mail'><label>Senha (de 6 a 12 caracteres)</label><input id='regPassword' type='password' autocomplete='new-password' minlength='6' maxlength='12' placeholder='Crie uma senha de 6 a 12 caracteres'><label>Código de convite</label><input id='regInvite' autocomplete='off' autocapitalize='characters' maxlength='80' placeholder='Código individual recebido'><button class='btn primary' onclick='registerWithInvite()'>Criar minha conta</button><button class='btn gray' onclick='authDialog()'>Voltar ao login</button>`);
 }
 async function registerWithInvite(){
   const full_name=document.getElementById('regName')?.value.trim()||'';
   const email=document.getElementById('regEmail')?.value.trim()||'';
   const password=document.getElementById('regPassword')?.value||'';
   const invite_code=document.getElementById('regInvite')?.value.trim()||'';
-  if(full_name.length<3||!email||password.length<10||!invite_code){toast('Preencha todos os campos; a senha deve ter pelo menos 10 caracteres.');return;}
+  if(full_name.length<3||!email||password.length<6||password.length>12||!invite_code){toast('Preencha todos os campos; a senha deve ter de 6 a 12 caracteres.');return;}
   const btn=document.querySelector('#mb button.primary');if(btn){btn.disabled=true;btn.textContent='Criando conta...';}
   try{
     const response=await fetch(EDGE_FUNCTIONS_URL+'/register-with-invite',{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_PUBLISHABLE_KEY},body:JSON.stringify({full_name,email,password,invite_code})});
