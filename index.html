@@ -62,6 +62,37 @@ let currentUser=null;
 function displayName(user=currentUser){const meta=user?.user_metadata||{};return (meta.full_name||meta.name||meta.nome_completo||'').trim() || 'Usuário';}
 const esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));
 function requireAuth(){if(!currentUser){authDialog('Entre com sua conta autorizada para alterar equipamentos.');return false;}return true;}
+
+// A autorização é verificada no banco, não apenas no estado visual do site.
+let accessCheckRunning=false;
+let revocationHandled=false;
+async function verifyActiveAccess(showMessage=true){
+  if(!currentUser)return false;
+  const {data,error}=await supabaseClient.rpc('smartlock_is_active');
+  if(error){
+    console.error('Falha ao verificar autorização:',error);
+    if(showMessage)toast('Não foi possível confirmar sua autorização. Tente novamente.');
+    return false;
+  }
+  if(data===true){revocationHandled=false;return true;}
+  if(!revocationHandled){
+    revocationHandled=true;
+    currentUser=null;
+    updateAuthButton();
+    await supabaseClient.auth.signOut();
+    closeM();
+    home();
+    if(showMessage)authDialog('Seu acesso foi revogado pelo administrador. Entre em contato com a administração se precisar de acesso novamente.');
+  }
+  return false;
+}
+async function pollActiveAccess(){
+  if(!currentUser||accessCheckRunning)return;
+  accessCheckRunning=true;
+  try{await verifyActiveAccess(true);}finally{accessCheckRunning=false;}
+}
+setInterval(pollActiveAccess,10000);
+
 function updateAuthButton(){const b=document.getElementById('authBtn');if(b)b.textContent=currentUser?'Sair':'Entrar';const small=document.querySelector('.hd small');if(small)small.textContent=currentUser?('Conectado: '+displayName()+' • LAB Ideias'):'Controle inteligente de bloqueios • LAB Ideias';}
 
 async function authDialog(message=''){
@@ -106,8 +137,8 @@ async function adminUsers(){if(!isAdmin()){toast('Apenas o administrador.');retu
 async function deleteAuthUser(id,name){if(!isAdmin()||id===ADMIN_USER_ID)return;if(!confirm('Excluir definitivamente a conta de '+name+'?'))return;try{await adminRequest('delete_user',{user_id:id});toast('Conta excluída.');adminUsers();}catch(e){toast(e.message);}}
 async function archiveEquipment(id){if(!isAdmin()){toast('Somente o administrador pode remover equipamentos.');return;}const x=pts.find(p=>p.id===id);if(!x)return;if(x.s==='blocked'){toast('Encerre o bloqueio antes de remover o equipamento.');return;}if(!confirm('Remover '+x.n+' da lista? O histórico será preservado.'))return;try{await adminRequest('archive_equipment',{equipment_id:id});pts=pts.filter(p=>p.id!==id);toast('Equipamento removido da lista; histórico preservado.');home();}catch(e){toast(e.message);}}
 async function copyInviteCode(code){try{await navigator.clipboard.writeText(code);toast('Código copiado. Envie apenas ao funcionário autorizado.');}catch(_){toast('Selecione e copie o código exibido.');}}
-async function loginUser(){const email=document.getElementById('loginEmail').value.trim(),password=document.getElementById('loginPassword').value;if(!email||!password){toast('Informe e-mail e senha');return;}const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error){toast('Login não realizado. Confira os dados.');return;}currentUser=data.user;updateAuthButton();closeM();toast('Acesso autorizado');home();}
-supabaseClient.auth.getSession().then(({data})=>{currentUser=data.session?.user||null;updateAuthButton();});
+async function loginUser(){const email=document.getElementById('loginEmail').value.trim(),password=document.getElementById('loginPassword').value;if(!email||!password){toast('Informe e-mail e senha');return;}const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error){toast('Login não realizado. Confira os dados.');return;}currentUser=data.user;updateAuthButton();const allowed=await verifyActiveAccess(false);if(!allowed){await supabaseClient.auth.signOut();currentUser=null;updateAuthButton();authDialog('Esta conta não está autorizada a acessar o SmartLock.');return;}closeM();toast('Acesso autorizado');home();}
+supabaseClient.auth.getSession().then(async ({data})=>{currentUser=data.session?.user||null;updateAuthButton();if(currentUser)await verifyActiveAccess(false);});
 supabaseClient.auth.onAuthStateChange((_event,session)=>{currentUser=session?.user||null;updateAuthButton();});
 
 async function loadFromSupabase(){
@@ -142,6 +173,7 @@ async function loadFromSupabase(){
 }
 
 async function saveEquipment(x){
+  if(!await verifyActiveAccess(true))return false;
   const row={id:x.id,nome:x.n,ccm:x.ccm,area:x.area,cub:x.cub,tipo:x.type,status:x.s,
     motivo:x.reason||null,responsavel:x.resp||null,data_hora:x.time||null,observacao:x.obs||null};
   const {id,...updates}=row;
@@ -151,6 +183,7 @@ async function saveEquipment(x){
 }
 
 async function saveHistory(x, action, user){
+  if(!await verifyActiveAccess(true))return false;
   // A tabela public.historico não possui a coluna usuario_id.
   // Enviar apenas colunas existentes evita o erro 400/PGRST204.
   const {error}=await supabaseClient.from('historico').insert({
@@ -256,8 +289,8 @@ function detail(id){let x=pts.find(p=>p.id===id);M.innerHTML=head('Detalhes do p
 function statusTabs(active){return `<div class='grid2' style='margin-bottom:12px'><button class='btn ${active==='blocked'?'danger':'light'}' onclick='blocks()'>🔒 Bloqueados</button><button class='btn ${active==='free'?'success':'light'}' onclick='freePoints()'>🟢 Livres</button></div>`}
 function blocks(){nav(3);let a=pts.filter(x=>x.s==='blocked');M.innerHTML=head('🔒 Bloqueios ativos','Equipamentos atualmente bloqueados')+statusTabs('blocked')+`<div class='card grid2'><div><b style='font-size:24px;color:#df3037'>${a.length}</b><small style='display:block'>Bloqueados</small></div><div><b style='font-size:24px;color:#08a66f'>${pts.length-a.length}</b><small style='display:block'>Livres</small></div></div>`+(a.length?a.map(card).join(''):'<div class="card">Nenhum bloqueio ativo.</div>')}
 function freePoints(){nav(3);let a=pts.filter(x=>x.s==='free');M.innerHTML=head('🟢 Equipamentos livres','Pontos atualmente sem bloqueio registrado')+statusTabs('free')+`<div class='card grid2'><div><b style='font-size:24px;color:#08a66f'>${a.length}</b><small style='display:block'>Livres</small></div><div><b style='font-size:24px;color:#df3037'>${pts.length-a.length}</b><small style='display:block'>Bloqueados</small></div></div>`+(a.length?a.map(card).join(''):'<div class="card">Nenhum equipamento livre encontrado.</div>')}
-function openBlock(id){if(!requireAuth())return;let x=pts.find(p=>p.id===id);modal(`<h2>🔒 Registrar bloqueio</h2><p>${x.n}<br><span style='color:#6d7f91'>${x.ccm} • ${x.cub}</span></p><label>Motivo</label><select id='mot'><option>Manutenção mecânica</option><option>Intervenção elétrica</option><option>Segurança</option><option>Inspeção</option><option>Outro</option></select><label>Responsável</label><input id='resp' placeholder='Nome'><label>Observação</label><textarea id='obs' placeholder='Descrição da atividade'></textarea><button class='btn danger' onclick='saveBlock(${id})'>🔒 Confirmar bloqueio</button><button class='btn gray' onclick='closeM()'>Cancelar</button>`)}async function saveBlock(id){if(!requireAuth())return;const old=pts.find(p=>p.id===id);if(!old)return;const x={...old,s:'blocked',reason:document.getElementById('mot').value,resp:displayName(),obs:document.getElementById('obs').value,time:new Date().toISOString()};if(!(await saveEquipment(x)))return;Object.assign(old,x);const logged=await saveHistory(x,'Bloqueio registrado',displayName());await refreshHistory();closeM();toast(logged?'Bloqueio registrado e salvo':'Bloqueio salvo, mas houve falha no histórico');setTimeout(()=>detail(id),500)}
-function endBlock(id){if(!requireAuth())return;let x=pts.find(p=>p.id===id);modal(`<h2>✅ Encerrar bloqueio</h2><p>Confirma a liberação?</p><b>${x.n}</b><p class='sub'>${x.ccm} • ${x.cub}</p><textarea id='eo' placeholder='Observação do encerramento'></textarea><button class='btn success' onclick='confirmEnd(${id})'>✅ Confirmar encerramento</button><button class='btn gray' onclick='closeM()'>Cancelar</button>`)}async function confirmEnd(id){if(!requireAuth())return;const old=pts.find(p=>p.id===id);if(!old)return;const x={...old,s:'free',obs:document.getElementById('eo').value||'Bloqueio encerrado',resp:displayName(),time:new Date().toISOString()};if(!(await saveEquipment(x)))return;Object.assign(old,x);const logged=await saveHistory(x,'Bloqueio encerrado',displayName());await refreshHistory();closeM();toast(logged?'Ponto liberado e salvo':'Ponto liberado, mas houve falha no histórico');setTimeout(()=>detail(id),500)}
+function openBlock(id){if(!requireAuth())return;let x=pts.find(p=>p.id===id);modal(`<h2>🔒 Registrar bloqueio</h2><p>${x.n}<br><span style='color:#6d7f91'>${x.ccm} • ${x.cub}</span></p><label>Motivo</label><select id='mot'><option>Manutenção mecânica</option><option>Intervenção elétrica</option><option>Segurança</option><option>Inspeção</option><option>Outro</option></select><label>Responsável</label><input id='resp' placeholder='Nome'><label>Observação</label><textarea id='obs' placeholder='Descrição da atividade'></textarea><button class='btn danger' onclick='saveBlock(${id})'>🔒 Confirmar bloqueio</button><button class='btn gray' onclick='closeM()'>Cancelar</button>`)}async function saveBlock(id){if(!requireAuth()||!await verifyActiveAccess(true))return;const old=pts.find(p=>p.id===id);if(!old)return;const x={...old,s:'blocked',reason:document.getElementById('mot').value,resp:displayName(),obs:document.getElementById('obs').value,time:new Date().toISOString()};if(!(await saveEquipment(x)))return;Object.assign(old,x);const logged=await saveHistory(x,'Bloqueio registrado',displayName());await refreshHistory();closeM();toast(logged?'Bloqueio registrado e salvo':'Bloqueio salvo, mas houve falha no histórico');setTimeout(()=>detail(id),500)}
+function endBlock(id){if(!requireAuth())return;let x=pts.find(p=>p.id===id);modal(`<h2>✅ Encerrar bloqueio</h2><p>Confirma a liberação?</p><b>${x.n}</b><p class='sub'>${x.ccm} • ${x.cub}</p><textarea id='eo' placeholder='Observação do encerramento'></textarea><button class='btn success' onclick='confirmEnd(${id})'>✅ Confirmar encerramento</button><button class='btn gray' onclick='closeM()'>Cancelar</button>`)}async function confirmEnd(id){if(!requireAuth()||!await verifyActiveAccess(true))return;const old=pts.find(p=>p.id===id);if(!old)return;const x={...old,s:'free',obs:document.getElementById('eo').value||'Bloqueio encerrado',resp:displayName(),time:new Date().toISOString()};if(!(await saveEquipment(x)))return;Object.assign(old,x);const logged=await saveHistory(x,'Bloqueio encerrado',displayName());await refreshHistory();closeM();toast(logged?'Ponto liberado e salvo':'Ponto liberado, mas houve falha no histórico');setTimeout(()=>detail(id),500)}
 function history(){nav(4);M.innerHTML=head('▤ Histórico','Consulte os eventos por dia ou período')+`<div class='card'><label>Dia específico</label><input id='hd' type='date' onchange='hf()'><div class='grid2'><div><label>De</label><input id='hfrom' type='date' onchange='hf()'></div><div><label>Até</label><input id='hto' type='date' onchange='hf()'></div></div><button class='btn light' onclick='clearHistoryDates()'>Limpar datas</button><label>Pesquisar equipamento</label><input id='hq' oninput='hf()' placeholder='Nome, CCM ou CUB'><label>Tipo de evento</label><select id='hs' onchange='hf()'><option value=''>Todos os eventos</option><option>Bloqueio registrado</option><option>Bloqueio encerrado</option></select></div><div id='hist'></div>`;hf()}
 function clearHistoryDates(){for(const id of ['hd','hfrom','hto']){const e=document.getElementById(id);if(e)e.value='';}hf()}
 function historyDateKey(value){
