@@ -1,6 +1,43 @@
 <!doctype html><html lang='pt-BR'><head><meta name="theme-color" content="#07518f"><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>SmartLock CSN</title>
 <style>
 :root{--n:#063b73;--b:#0876d1;--g:#08a66f;--r:#df3037;--o:#e88918;--bg:#eef3f8;--t:#17324d;--m:#6d7f91;--l:#dbe4ed}*{box-sizing:border-box}body{margin:0;background:#dbe3ec;font-family:Arial;color:var(--t)}.app{max-width:430px;min-height:100vh;margin:auto;background:var(--bg);box-shadow:0 0 30px #0003}.hd{height:72px;background:linear-gradient(135deg,#052f5d,#0876d1);color:#fff;padding:14px 16px;display:flex;gap:10px;align-items:center;position:sticky;top:0;z-index:5}.logo{width:42px;height:42px;border-radius:10px;background:#fff;color:var(--n);display:grid;place-items:center;font-weight:900}.hd b{display:block}.hd small{font-size:10px;opacity:.8}main{padding:14px 14px 90px}.title{font-size:20px;font-weight:800}.sub{font-size:11px;color:var(--m);margin:4px 0 13px}.card{background:#fff;border:1px solid #edf1f5;border-radius:15px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px #19324d0d}.hero{background:linear-gradient(135deg,#063b73,#0876d1);color:#fff}.hero .muted{color:#d9e9f7}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.k{border-radius:13px;padding:12px;color:#fff;border:0;text-align:left;width:100%;font-family:inherit}.k b{font-size:24px;display:block}.k small{font-size:10px}.blue{background:var(--b)}.red{background:var(--r)}.green{background:var(--g)}.orange{background:var(--o)}button{cursor:pointer}.btn{border:0;border-radius:10px;padding:12px;width:100%;margin:4px 0;font-weight:700;font-size:13px}.primary{background:var(--b);color:#fff}.dark{background:var(--n);color:#fff}.success{background:var(--g);color:#fff}.danger{background:var(--r);color:#fff}.light{background:#eaf2fa;color:#07518f}.gray{background:#e8edf2;color:#40566b}input,select,textarea{width:100%;padding:11px;border:1px solid var(--l);border-radius:9px;margin:4px 0 9px;font-size:13px}textarea{min-height:75px}label{font-size:11px;color:var(--m);font-weight:bold}.item{background:#fff;border:1px solid var(--l);border-radius:12px;padding:12px;margin:8px 0;cursor:pointer}.item b{display:block;padding-right:85px;font-size:13px}.item small{display:block;color:var(--m);font-size:11px;margin-top:4px}.badge{float:right;border-radius:18px;padding:5px 8px;font-size:9px;font-weight:800}.br{background:#ffe0e2;color:#c71c25}.bg{background:#daf6e9;color:#08774f}.menu{display:grid;grid-template-columns:1fr 1fr;gap:8px}.menu button{min-height:70px;text-align:left;padding:11px;border:1px solid var(--l);border-radius:12px;background:#fff}.menu span{font-size:20px}.menu b{display:block;margin-top:5px}.nav{position:fixed;bottom:0;width:430px;max-width:100%;height:68px;background:#fff;border-top:1px solid var(--l);display:flex;justify-content:space-around;padding-top:7px;z-index:20}.nav button{border:0;background:none;color:#697b8e;font-size:9px}.nav b{display:block;font-size:18px}.on{color:#0876d1!important;font-weight:800}.qr{text-align:center;border:2px dashed #8ca0b3;border-radius:14px;padding:17px}.qrmark{font-size:65px}.timeline{border-left:2px solid #cbd7e3;margin-left:9px;padding-left:17px}.event{margin-bottom:15px}.event b{font-size:12px}.event small{display:block;color:var(--m);margin-top:3px}.toast{display:none;position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#17324d;color:#fff;padding:11px 16px;border-radius:10px;font-size:12px;z-index:50}.modal{display:none;position:fixed;inset:0;background:#0007;z-index:40;align-items:flex-end}.modalbox{background:#fff;width:430px;max-width:100%;margin:auto;border-radius:20px 20px 0 0;padding:18px;max-height:88vh;overflow:auto}
+
+/* Layout responsivo para desktop: preserva o layout compacto no celular */
+@media (min-width: 900px) {
+  body { background: #eef3f8; }
+  .app { max-width: none; width: 100%; min-height: 100vh; margin: 0; box-shadow: none; }
+  .hd { padding-left: 26px; padding-right: 26px; }
+  main { margin-left: 230px; padding: 26px 30px 40px; min-height: calc(100vh - 72px); }
+  .nav { position: fixed; z-index: 6; left: 0; top: 0; bottom: 0; width: 200px; height: 100vh;
+    padding: 100px 12px 20px; display: flex; flex-direction: column; justify-content: flex-start;
+    gap: 8px; border-top: 0; border-right: 1px solid var(--l); background: #fff; }
+  .nav button { display: flex; align-items: center; gap: 12px; text-align: left; padding: 13px 14px;
+    border-radius: 10px; font-size: 13px; }
+  .nav button b { display: inline-block; width: 24px; font-size: 19px; text-align: center; }
+  .nav button.on { background: #e7f2ff; }
+  .title { font-size: 25px; }
+  .sub { font-size: 13px; }
+  .card { padding: 20px; margin-bottom: 16px; }
+  .menu { grid-template-columns: repeat(3, minmax(180px, 1fr)); gap: 14px; }
+  .menu button { min-height: 100px; padding: 18px; font-size: 14px; }
+  .menu span { font-size: 24px; }
+  .menu b { font-size: 14px; }
+  .item { padding: 17px 19px; margin: 10px 0; }
+  .item b { font-size: 15px; }
+  .item small { font-size: 12px; }
+  .btn { padding: 14px 16px; font-size: 14px; }
+  input, select, textarea { padding: 13px; font-size: 14px; }
+  .modal { align-items: center; padding: 24px; }
+  .modalbox { width: min(620px, 100%); max-width: 620px; margin: auto; border-radius: 18px;
+    max-height: 90vh; padding: 24px; box-shadow: 0 20px 70px #0003; }
+  .toast { bottom: 24px; left: calc(50% + 115px); font-size: 14px; }
+}
+@media (min-width: 1400px) {
+  main { padding-left: 42px; padding-right: 42px; }
+  .menu { grid-template-columns: repeat(4, minmax(180px, 1fr)); }
+}
+@media (max-width: 899px) { .app { width: 100%; } }
+
 </style></head><body><div class='app'><header class='hd'><div class='logo'>CS</div><div style='flex:1'><b>SmartLock CSN</b><small>Controle inteligente de bloqueios • LAB Ideias</small></div><button id='authBtn' onclick='authDialog()' style='border:1px solid #ffffff80;background:#ffffff18;color:#fff;border-radius:8px;padding:8px;font-size:11px'>Entrar</button></header><main id='main'></main><nav class='nav'><button id='n0' onclick='home()'><b>⌂</b>Início</button><button id='n1' onclick='search()'><b>⌕</b>Pesquisar</button><button id='n2' onclick='qr()'><b>▦</b>QR Code</button><button id='n3' onclick='blocks()'><b>🔒</b>Bloqueios</button><button id='n4' onclick='history()'><b>▤</b>Histórico</button></nav></div><div id='toast' class='toast'></div><div id='modal' class='modal'><div id='mb' class='modalbox'></div></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <script>
@@ -67,98 +104,21 @@ async function createInvite(){
 }
 async function adminUsers(){if(!isAdmin()){toast('Apenas o administrador.');return;}try{const r=await adminRequest('list_users');modal(`<h2>👥 Gerenciar usuários</h2><p class='sub'>Excluir uma conta impede novo login. A ação é permanente.</p>${r.users.map(u=>`<div class='item'><b>${esc(u.full_name||'Sem nome')}</b><small>${esc(u.email||'Sem e-mail')}</small><small>${u.id===ADMIN_USER_ID?'Administrador':'Integrante'}</small>${u.id!==ADMIN_USER_ID?`<button class='btn danger' onclick='deleteAuthUser(${JSON.stringify(u.id)},${JSON.stringify(u.full_name||u.email||'usuário')})'>Excluir cadastro</button>`:''}</div>`).join('')}<button class='btn gray' onclick='closeM()'>Fechar</button>`);}catch(e){toast(e.message);}}
 async function deleteAuthUser(id,name){if(!isAdmin()||id===ADMIN_USER_ID)return;if(!confirm('Excluir definitivamente a conta de '+name+'?'))return;try{await adminRequest('delete_user',{user_id:id});toast('Conta excluída.');adminUsers();}catch(e){toast(e.message);}}
-async function archiveEquipment(id){if(!isAdmin()){toast('Somente o administrador pode remover equipamentos.');return;}const x=pts.find(p=>p.id===id);if(!x)return;if(x.s==='blocked'){toast('Encerre o bloqueio antes de remover o equipamento.');return;}if(!confirm('Remover '+x.n+' da lista? O histórico será preservado.'))return;try{await adminRequest('archive_equipment',{equipment_id:id});pts=pts.filter(p=>p.id!==id);toast('Equipamento removido da lista; histórico preservado.');home();}catch(e){toast(e.message);}}
-async function copyInviteCode(code){try{await navigator.clipboard.writeText(code);toast('Código copiado. Envie apenas ao funcionário autorizado.');}catch(_){toast('Selecione e copie o código exibido.');}}
-async function loginUser(){const email=document.getElementById('loginEmail').value.trim(),password=document.getElementById('loginPassword').value;if(!email||!password){toast('Informe e-mail e senha');return;}const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error){toast('Login não realizado. Confira os dados.');return;}currentUser=data.user;updateAuthButton();closeM();toast('Acesso autorizado');home();}
-supabaseClient.auth.getSession().then(({data})=>{currentUser=data.session?.user||null;updateAuthButton();});
-supabaseClient.auth.onAuthStateChange((_event,session)=>{currentUser=session?.user||null;updateAuthButton();});
-
-async function loadFromSupabase(){
-  const {data, error}=await supabaseClient.from('equipamentos').select('*').eq('archived',false).order('id');
-  if(error){ console.error(error); toast('Erro ao carregar dados do banco'); return; }
-  if(data && data.length){
-    pts=data.map(x=>({
-      id:Number(x.id), n:x.nome, ccm:x.ccm||'', area:x.area||'', cub:x.cub||'',
-      type:x.tipo||'Equipamento', s:x.status==='blocked'?'blocked':'free',
-      reason:x.motivo||'', resp:x.responsavel||'', time:x.data_hora||'', obs:x.observacao||''
-    }));
-  } else {
-    const seed=pts.map(x=>({
-      id:x.id,nome:x.n,ccm:x.ccm,area:x.area,cub:x.cub,tipo:x.type,
-      status:x.s,motivo:x.reason||null,responsavel:x.resp||null,data_hora:x.time||null,observacao:x.obs||null
-    }));
-    const ins=await supabaseClient.from('equipamentos').upsert(seed);
-    if(ins.error) console.error(ins.error);
-  }
-  const h=await supabaseClient.from('historico').select('*').order('id',{ascending:false});
-  if(!h.error && h.data?.length){
-    logs=h.data.map(e=>{
-      const p=pts.find(x=>x.id===Number(e.equipamento_id));
-      return p?{id:e.id,a:e.acao,p,time:e.data_hora,user:e.responsavel||'Operador'}:null;
-    }).filter(Boolean);
-  } else {
-    logs=pts.filter(x=>x.s==='blocked').map(x=>({a:'Bloqueio registrado',p:x,time:x.time,user:x.resp||'Operador'}));
-  }
-  dbReady=true;
-  home();
-  openLinkedEquipment();
+async function archiveEquipment(id){
+  if(!isAdmin()){toast('Somente o administrador pode remover equipamentos.');return;}
+  const x=pts.find(p=>Number(p.id)===Number(id));
+  if(!x)return;
+  if(x.s==='blocked'){toast('Encerre o bloqueio antes de remover o equipamento.');return;}
+  if(!confirm('Remover '+x.n+' da lista? O histórico será preservado.'))return;
+  try{
+    const result=await adminRequest('archive_equipment',{equipment_id:Number(id)});
+    pts=pts.filter(p=>Number(p.id)!==Number(id));
+    if(typeof loadHistory==='function') await loadHistory();
+    toast(result?.message||'Equipamento removido da lista; histórico preservado.');
+    home();
+  }catch(e){console.error('archiveEquipment',e);toast(e.message||'Não foi possível remover o equipamento.');}
 }
 
-async function saveEquipment(x){
-  const row={id:x.id,nome:x.n,ccm:x.ccm,area:x.area,cub:x.cub,tipo:x.type,status:x.s,
-    motivo:x.reason||null,responsavel:x.resp||null,data_hora:x.time||null,observacao:x.obs||null};
-  const {id,...updates}=row;
-  const {error}=await supabaseClient.from('equipamentos').update(updates).eq('id',id);
-  if(error){console.error(error);toast('Não foi possível salvar no banco');return false;}
-  return true;
-}
-
-async function saveHistory(x, action, user){
-  // A tabela public.historico não possui a coluna usuario_id.
-  // Enviar apenas colunas existentes evita o erro 400/PGRST204.
-  const {error}=await supabaseClient.from('historico').insert({
-    equipamento_id:x.id,
-    acao:action,
-    responsavel:user||'Operador',
-    data_hora:x.time||new Date().toISOString(),
-    observacao:x.obs||null
-  });
-  if(error){console.error('Falha ao salvar histórico:',error);return false;}
-  return true;
-}
-
-async function refreshHistory(){
-  const h=await supabaseClient.from('historico').select('*').order('id',{ascending:false});
-  if(h.error){console.error(h.error);return;}
-  logs=h.data.map(e=>{
-    const p=pts.find(x=>x.id===Number(e.equipamento_id));
-    return p?{id:e.id,a:e.acao,p,time:e.data_hora,user:e.responsavel||'Operador'}:null;
-  }).filter(Boolean);
-}
-
-supabaseClient.channel('smartlock-live')
-  .on('postgres_changes',{event:'*',schema:'public',table:'equipamentos'},payload=>{
-    const r=payload.new;
-    if(!r) return;
-    const i=pts.findIndex(x=>x.id===Number(r.id));
-    if(r.archived===true){if(i>=0)pts.splice(i,1);if(document.getElementById('n0').classList.contains('on'))home();else if(document.getElementById('n3').classList.contains('on'))blocks();else if(document.getElementById('n4').classList.contains('on'))history();return;}
-    const x={id:Number(r.id),n:r.nome,ccm:r.ccm||'',area:r.area||'',cub:r.cub||'',type:r.tipo||'Equipamento',
-      s:r.status==='blocked'?'blocked':'free',reason:r.motivo||'',resp:r.responsavel||'',time:r.data_hora||'',obs:r.observacao||''};
-    if(i>=0) pts[i]=x; else pts.push(x);
-    if(document.getElementById('n0').classList.contains('on')) home();
-    else if(document.getElementById('n1').classList.contains('on')) filter();
-    else if(document.getElementById('n3').classList.contains('on')) blocks();
-    else if(document.getElementById('n4').classList.contains('on')) history();
-  })
-  .on('postgres_changes',{event:'*',schema:'public',table:'historico'},async ()=>{
-    await refreshHistory();
-    if(document.getElementById('n0').classList.contains('on')) home();
-    else if(document.getElementById('n4').classList.contains('on')) history();
-  })
-  .subscribe();
-
-
-const M=document.getElementById('main');function fmtDate(v){if(!v)return '—';const d=new Date(v);return Number.isNaN(d.getTime())?String(v):d.toLocaleString('pt-BR');}function nav(i){for(let j=0;j<5;j++)document.getElementById('n'+j).className=j===i?'on':''}function toast(x){let e=document.getElementById('toast');e.textContent=x;e.style.display='block';setTimeout(()=>e.style.display='none',2200)}function head(a,b){return `<div class='title'>${a}</div><div class='sub'>${b}</div>`}function card(x){return `<div class='item' onclick='detail(${x.id})'><span class='badge ${x.s==='blocked'?'br':'bg'}'>${x.s==='blocked'?'🔴 BLOQUEADO':'🟢 LIVRE'}</span><b>${esc(x.n)}</b><small>${esc(x.ccm)} • ${esc(x.area)}</small><small>${esc(x.cub)} • ${esc(x.type)}</small></div>`}
 function home(){
   nav(0);
   const blocked=pts.filter(x=>x.s==='blocked').length;
