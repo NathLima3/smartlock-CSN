@@ -56,7 +56,7 @@
     {id:4,n:'VÁLVULA V-27',ccm:'CCM#14',area:'C.C. LESTE 3',cub:'CUB.B07',type:'Válvula',s:'free'},
     {id:5,n:'EXAUSTOR E-08',ccm:'CCM#15',area:'C.C. LESTE 3',cub:'CUB.A11',type:'Exaustor',s:'blocked',reason:'Intervenção elétrica',resp:'Maria',time:'07/10/2026 09:15',obs:'Inspeção do circuito'},
     {id:6,n:'VENTILADOR V-02',ccm:'CCM#16',area:'C.C. LESTE 3',cub:'CUB.C04',type:'Ventilador',s:'free'}];
-    let logs=pts.filter(x=>x.s==='blocked').map(x=>({a:'Bloqueio registrado',p:x,time:x.time,user:x.resp}));
+    let logs=[]; // O histórico deve conter somente eventos reais da tabela public.historico.
     let dbReady=false;
     let currentUser=null;
     function displayName(user=currentUser){const meta=user?.user_metadata||{};return (meta.full_name||meta.name||meta.nome_completo||'').trim() || 'Usuário';}
@@ -168,14 +168,27 @@
         const ins=await supabaseClient.from('equipamentos').upsert(seed);
         if(ins.error) console.error(ins.error);
       }
-      const h=await supabaseClient.from('historico').select('*').order('id',{ascending:false});
-      if(!h.error && h.data?.length){
-        logs=h.data.map(e=>{
-          const p=pts.find(x=>x.id===Number(e.equipamento_id));
-          return p?{id:e.id,a:e.acao,p,time:e.data_hora,user:e.responsavel||'Operador'}:null;
-        }).filter(Boolean);
+      const h = await supabaseClient
+        .from('historico')
+        .select('*')
+        .order('id', { ascending: false });
+
+      if (h.error) {
+        console.error('Erro ao carregar histórico:', h.error);
+        logs = [];
       } else {
-        logs=pts.filter(x=>x.s==='blocked').map(x=>({a:'Bloqueio registrado',p:x,time:x.time,user:x.resp||'Operador'}));
+        logs = (h.data || []).map(e => {
+          const p = pts.find(x => x.id === Number(e.equipamento_id));
+          return p
+            ? {
+                id: e.id,
+                a: e.acao,
+                p,
+                time: e.data_hora,
+                user: e.responsavel || 'Operador'
+              }
+            : null;
+        }).filter(Boolean);
       }
       dbReady=true;
       home();
@@ -319,19 +332,7 @@
     function freePoints(){nav(3);let a=pts.filter(x=>x.s==='free');M.innerHTML=head('🟢 Equipamentos livres','Pontos atualmente sem bloqueio registrado')+statusTabs('free')+`<div class='card grid2'><div><b style='font-size:24px;color:#08a66f'>${a.length}</b><small style='display:block'>Livres</small></div><div><b style='font-size:24px;color:#df3037'>${pts.length-a.length}</b><small style='display:block'>Bloqueados</small></div></div>`+(a.length?a.map(card).join(''):'<div class="card">Nenhum equipamento livre encontrado.</div>')}
     function openBlock(id){if(!requireAuth())return;let x=pts.find(p=>p.id===id);if(!x||x.s==='blocked'){toast('Este equipamento já está bloqueado.');return;}modal(`<h2>🔒 Registrar bloqueio</h2><p>${x.n}<br><span style='color:#6d7f91'>${x.ccm} • ${x.cub}</span></p><label>Motivo <span style='color:#df3037'>*</span></label><select id='mot' required><option value=''>Selecione o motivo</option><option>Manutenção mecânica</option><option>Intervenção elétrica</option><option>Segurança</option><option>Inspeção</option><option>Outro</option></select><label>Responsável <span style='color:#df3037'>*</span></label><input id='resp' maxlength='100' required placeholder='Nome do responsável'><label>Observação <span style='color:#df3037'>*</span></label><textarea id='obs' maxlength='2000' required placeholder='Descreva a atividade'></textarea><button class='btn danger' onclick='saveBlock(${id})'>🔒 Confirmar bloqueio</button><button class='btn gray' onclick='closeM()'>Cancelar</button>`)}async function saveBlock(id){if(!requireAuth()||!await verifyActiveAccess(true))return;const old=pts.find(p=>p.id===id);if(!old)return;if(old.s==='blocked'){toast('Este equipamento já está bloqueado.');return;}const mot=document.getElementById('mot')?.value.trim()||'';const resp=document.getElementById('resp')?.value.trim()||'';const obs=document.getElementById('obs')?.value.trim()||'';if(!mot||!resp||!obs){toast('Preencha todos os campos antes de confirmar o bloqueio.');if(!mot)document.getElementById('mot')?.focus();else if(!resp)document.getElementById('resp')?.focus();else document.getElementById('obs')?.focus();return;}const x={...old,s:'blocked',reason:mot,resp,obs,time:new Date().toISOString()};if(!(await saveEquipment(x)))return;Object.assign(old,x);const logged=await saveHistory(x,'Bloqueio registrado',displayName());await refreshHistory();closeM();toast(logged?'Bloqueio registrado e salvo':'Bloqueio salvo, mas houve falha no histórico');setTimeout(()=>detail(id),500)}
     function endBlock(id){if(!requireAuth())return;let x=pts.find(p=>p.id===id);if(!x||x.s!=='blocked'){toast('Este equipamento não possui bloqueio ativo.');return;}modal(`<h2>✅ Encerrar bloqueio</h2><p>Confirma a liberação?</p><b>${x.n}</b><p class='sub'>${x.ccm} • ${x.cub}</p><label>Observação do encerramento <span style='color:#df3037'>*</span></label><textarea id='eo' maxlength='2000' required placeholder='Informe o motivo da liberação ou o serviço concluído'></textarea><button class='btn success' onclick='confirmEnd(${id})'>✅ Confirmar encerramento</button><button class='btn gray' onclick='closeM()'>Cancelar</button>`)}async function confirmEnd(id){if(!requireAuth()||!await verifyActiveAccess(true))return;const old=pts.find(p=>p.id===id);if(!old)return;if(old.s!=='blocked'){toast('Este equipamento não possui bloqueio ativo.');return;}const eo=document.getElementById('eo')?.value.trim()||'';if(!eo){toast('Preencha a observação antes de confirmar o desbloqueio.');document.getElementById('eo')?.focus();return;}const x={...old,s:'free',obs:eo,resp:displayName(),time:new Date().toISOString()};if(!(await saveEquipment(x)))return;Object.assign(old,x);const logged=await saveHistory(x,'Bloqueio encerrado',displayName());await refreshHistory();closeM();toast(logged?'Ponto liberado e salvo':'Ponto liberado, mas houve falha no histórico');setTimeout(()=>detail(id),500)}
-    function history(){nav(4);M.innerHTML=head('▤ Histórico','Consulte os eventos por dia ou período')+`<div class='card'><label>Dia específico</label><input id='hd' type='date' onchange='historyDayChanged()'><div class='grid2'><div><label>De</label><input id='hfrom' type='date' onchange='historyRangeChanged()'></div><div><label>Até</label><input id='hto' type='date' onchange='historyRangeChanged()'></div></div><button class='btn light' onclick='clearHistoryDates()'>Limpar datas</button><label>Pesquisar equipamento</label><input id='hq' oninput='hf()' placeholder='Nome, CCM ou CUB'><label>Tipo de evento</label><select id='hs' onchange='hf()'><option value=''>Todos os eventos</option><option>Bloqueio registrado</option><option>Bloqueio encerrado</option></select></div><div id='hist'></div>`;hf()}
-    function historyDayChanged(){
-      const day=document.getElementById('hd');
-      if(day?.value){const from=document.getElementById('hfrom');const to=document.getElementById('hto');if(from)from.value='';if(to)to.value='';}
-      hf();
-    }
-    function historyRangeChanged(){
-      const from=document.getElementById('hfrom');
-      const to=document.getElementById('hto');
-      if(from?.value||to?.value){const day=document.getElementById('hd');if(day)day.value='';}
-      hf();
-    }
-    function clearHistoryDates(){for(const id of ['hd','hfrom','hto']){const e=document.getElementById(id);if(e)e.value='';}hf()}
+    function history(){nav(4);M.innerHTML=head('▤ Histórico','Consulte os eventos por dia ou período')+`<div class='card'><label>Dia específico</label><input id='hd' type='date' onchange='historyDayChanged()'><div class='grid2'><div><label>De</label><input id='hfrom' type='date' onchange='historyRangeChanged()'></div><div><label>Até</label><input id='hto' type='date' onchange='historyRangeChanged()'></div></div><button class='btn light' onclick='clearHistoryDates()'>Limpar datas</button><label>Pesquisar equipamento</label><input id='hq' oninput='hf()' placeholder='Nome, CCM ou CUB'><label>Tipo de evento</label><select id='hs' onchange='hf()'><option value=''>Todos os eventos</option><option>Bloqueio registrado</option><option>Bloqueio encerrado</option></select></div>${isAdmin()?`<div class='card'><b>Gerenciar histórico (ADM)</b><p class='sub'>Selecione os registros que deseja remover. Isso não altera os bloqueios ativos.</p><button class='btn danger' onclick='deleteSelectedHistory()'>🗑️ Excluir selecionados</button><button class='btn danger' style='margin-top:8px;background:#7f1d1d' onclick='clearAllHistory()'>⚠️ Limpar TODO o histórico</button><p class='sub'>A limpeza completa é permanente e exige duas confirmações.</p></div>`:''}<div id='hist'></div>`;hf()}
     function historyDateKey(value){
       if(!value)return '';
       const raw=String(value).trim();
@@ -368,7 +369,32 @@
         const dateOK=hasRange ? ((!from||d>=from)&&(!to||d<=to)) : (!day||d===day);
         return text.includes(q)&&(!s||x.a===s)&&dateOK;
       });
-      hist.innerHTML=a.map(x=>`<div class='item'><span class='badge ${x.a==='Bloqueio encerrado'?'bg':'br'}'>${x.a==='Bloqueio encerrado'?'ENCERRADO':'BLOQUEIO'}</span><b>${esc(x.p.n)}</b><small>${esc(x.p.ccm)} • ${esc(x.p.cub)}</small><small>${esc(fmtDate(x.time))} • ${esc(x.user)}</small></div>`).join('')||'<div class="card">Nenhum evento.</div>';
+      hist.innerHTML=a.map(x=>`<div class='item'>${isAdmin()?`<label style='display:flex;align-items:center;gap:8px;margin-bottom:8px;color:#17324d'><input class='history-select' type='checkbox' value='${Number(x.id)}' style='width:auto;margin:0'>Selecionar para excluir</label>`:''}<span class='badge ${x.a==='Bloqueio encerrado'?'bg':'br'}'>${x.a==='Bloqueio encerrado'?'ENCERRADO':'BLOQUEIO'}</span><b>${esc(x.p.n)}</b><small>${esc(x.p.ccm)} • ${esc(x.p.cub)}</small><small>${esc(fmtDate(x.time))} • ${esc(x.user)}</small></div>`).join('')||'<div class="card">Nenhum evento.</div>';
+    }
+    async function deleteSelectedHistory(){
+      if(!isAdmin()){toast('Somente o administrador pode excluir eventos.');return;}
+      const ids=[...document.querySelectorAll('.history-select:checked')].map(el=>Number(el.value)).filter(id=>Number.isSafeInteger(id)&&id>0);
+      if(!ids.length){toast('Selecione pelo menos um evento.');return;}
+      if(!confirm(`Confirma a exclusão permanente de ${ids.length} evento(s) selecionado(s)? Os equipamentos e bloqueios ativos não serão alterados.`))return;
+      try{
+        await adminRequest('delete_history_items',{history_ids:ids});
+        await refreshHistory();
+        toast(`${ids.length} evento(s) excluído(s).`);
+        history();
+      }catch(e){console.error('Falha ao excluir histórico:',e);toast(e.message||'Não foi possível excluir os eventos.');}
+    }
+    async function clearAllHistory(){
+      if(!isAdmin()){toast('Somente o administrador pode limpar o histórico.');return;}
+      const first=confirm('ATENÇÃO: você está prestes a excluir TODO o histórico de eventos. Esta ação é permanente e não pode ser desfeita. Os equipamentos e bloqueios ativos não serão alterados. Deseja continuar?');
+      if(!first)return;
+      const phrase=prompt('CONFIRMAÇÃO FINAL\nPara apagar todo o histórico, digite: Confirmar');
+      if((phrase||'').trim().toLocaleLowerCase('pt-BR')!=='confirmar'){toast('Limpeza cancelada. Você precisa digitar Confirmar para continuar.');return;}
+      try{
+        const result=await adminRequest('clear_all_history',{});
+        await refreshHistory();
+        toast('Todo o histórico foi excluído. Os equipamentos e bloqueios ativos foram mantidos.');
+        history();
+      }catch(e){console.error('Falha ao limpar todo o histórico:',e);toast(e.message||'Não foi possível limpar todo o histórico.');}
     }
     function qr(){nav(2);M.innerHTML=head('▦ QR Code','Gere um código real para consulta')+`<div class='card'><label>Escolha o equipamento</label><select id='qrSelect' onchange='renderSystemQR()'><option value=''>Selecione...</option>${pts.map(x=>`<option value='${x.id}'>${esc(x.n)} — ${esc(x.ccm)}</option>`).join('')}</select><div class='qr'><div id='qrCanvas' style='display:flex;justify-content:center;min-height:30px'></div><b id='qrLabel'>QR Code do equipamento</b><p class='sub'>O QR abre o endereço público do site diretamente no equipamento selecionado.</p><button class='btn primary' onclick='printQR()'>Imprimir QR Code</button></div></div>`;const id=new URLSearchParams(location.search).get('equipamento');if(id&&pts.some(x=>String(x.id)===id)){document.getElementById('qrSelect').value=id;renderSystemQR();} }
     function renderSystemQR(){const id=document.getElementById('qrSelect')?.value,box=document.getElementById('qrCanvas'),label=document.getElementById('qrLabel');if(!box)return;box.innerHTML='';if(!id){label.textContent='QR Code do equipamento';return;}const x=pts.find(p=>String(p.id)===String(id));if(!x)return;label.textContent=x.n;const u=new URL(location.href);u.search='';u.hash='';u.searchParams.set('equipamento',x.id);if(window.QRCode){new QRCode(box,{text:u.toString(),width:190,height:190,correctLevel:QRCode.CorrectLevel.M});}else{box.textContent='Biblioteca de QR Code indisponível. Verifique sua conexão.';}}
